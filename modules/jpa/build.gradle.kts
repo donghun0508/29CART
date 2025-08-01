@@ -6,6 +6,7 @@ plugins {
 dependencies {
     // jpa
     api("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.12.0")
     // querydsl
     api("com.querydsl:querydsl-jpa::jakarta")
     annotationProcessor("com.querydsl:querydsl-apt::jakarta")

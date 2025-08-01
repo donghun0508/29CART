@@ -23,16 +23,6 @@ public interface UserV1ApiSpec {
         summary = "회원 조회",
         description = "ID로 회원 정보를 조회합니다."
     )
-    @Parameter(
-        name = "X-USER-ID",
-        description = "조회할 회원의 ID",
-        required = true,
-        in = ParameterIn.HEADER,
-        schema = @Schema(
-            type = "string",
-            example = "user123"
-        )
-    )
     ApiResponse<UserV1Dto.UserResponse> getUser(
         @Parameter(hidden = true)
         String userId

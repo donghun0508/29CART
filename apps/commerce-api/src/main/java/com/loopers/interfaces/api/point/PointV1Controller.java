@@ -1,7 +1,10 @@
 package com.loopers.interfaces.api.point;
 
+import static com.loopers.interfaces.api.ApiHeaders.USER_ID;
+
 import com.loopers.application.user.UserFacade;
 import com.loopers.application.user.UserPointInfo;
+import com.loopers.interfaces.api.ApiHeaders;
 import com.loopers.interfaces.api.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +23,9 @@ public class PointV1Controller implements PointV1ApiSpec {
 
     @GetMapping
     @Override
-    public ApiResponse<PointV1Dto.PointResponse> getPoint(@RequestHeader("X-USER-ID") String userId) {
+    public ApiResponse<PointV1Dto.PointResponse> getPoint(
+        @RequestHeader(value = USER_ID) String userId
+    ) {
         UserPointInfo userPointInfo = userFacade.getUserPoint(userId);
         return ApiResponse.success(PointV1Dto.PointResponse.from(userPointInfo));
     }
@@ -28,7 +33,7 @@ public class PointV1Controller implements PointV1ApiSpec {
     @PostMapping("/charge")
     @Override
     public ApiResponse<PointV1Dto.PointResponse> chargePoint(
-        @RequestHeader("X-USER-ID") String userId,
+        @RequestHeader(value = USER_ID) String userId,
         @RequestBody PointV1Dto.ChargeRequest request
     ) {
         UserPointInfo userPointInfo = userFacade.chargePoint(userId, request.amount());

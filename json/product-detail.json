@@ -1,0 +1,398 @@
+{
+  "result": "SUCCESS",
+  "data": {
+    "responseDate": "2025-07-31 17:33:08",
+    "availableBeginTimestamp": "2025-03-31 09:34:59",
+    "availableEndTimestamp": null,
+    "deliveryImportantInformation": null,
+    "estimatedShippingBeginTimestamp": null,
+    "estimatedShippingEndTimestamp": null,
+    "frontBrand": {
+      "brandNameEng": "YCH",
+      "brandNameKor": "와이씨에이치",
+      "frontBrandImages": [
+        {
+          "fileUploadName": "/next-brand/2024/12/02/60fe5a7a6ca64840807ee0b668e02f6a_20241202105946.jpg",
+          "heightNo": 0,
+          "imageType": 3,
+          "widthNo": 0
+        },
+        {
+          "fileUploadName": "/next-brand/2025/06/20/0a6f1cecd3ff4c559b344822944a501d_20250620120003.jpg",
+          "heightNo": 0,
+          "imageType": 2,
+          "widthNo": 0
+        }
+      ],
+      "frontBrandNo": 68697,
+      "heartCount": 0,
+      "subCopy": "디자이너 윤춘호가 전개하는 YCH는 클래식을 기반으로 모던함과 페미닌한 요소를 가미하여 트렌드를 추구하는 브랜드입니다.",
+      "isFreeShipping": false
+    },
+    "genderAttr": 2,
+    "giftImages": {},
+    "isAdvancedIssueMileageType": false,
+    "isAllowedGiftOrder": true,
+    "dependentItemList": [],
+    "isCouponAllowedInOrder": true,
+    "isMembersOnly": false,
+    "isUnlimitedMaxOrderQty": true,
+    "itemAddedDescriptions": [],
+    "itemDescriptions": "<p style=\"font-size: 16px; line-height: 26px; color: #000000\"> </p><p style=\"font-size: 16px; line-height: 26px; color: #000000\">&#xFEFF</p><p><img src=\"https://img.29cm.co.kr/item/202504/11f0112ea6805045b1705d0ae816f6da.jpg\" style=\"max-width: 100%\" alt=\"\" /></p><p style=\"font-size: 16px; line-height: 26px; color: #000000\">\n</p>",
+    "itemDetailsList": [
+      {
+        "itemDetailsCode": 101101,
+        "itemDetailsPlaceholders": "섬유의 조성 또는 혼용률을 백분율로 표시, 기능성인 경우 성적서 또는 허가서",
+        "itemDetailsTitles": "제품 소재",
+        "itemDetailsValue": "[MAIN]COTTON 95% SPAN 5%"
+      },
+      {
+        "itemDetailsCode": 101102,
+        "itemDetailsPlaceholders": "",
+        "itemDetailsTitles": "색상",
+        "itemDetailsValue": "BLACK"
+      },
+      {
+        "itemDetailsCode": 101103,
+        "itemDetailsPlaceholders": "",
+        "itemDetailsTitles": "치수",
+        "itemDetailsValue": "34/36/38  SHOULDER:31/32/32 cm CHEST:67/69/70 cm LENGTH:37/43/48 cm"
+      },
+      {
+        "itemDetailsCode": 101104,
+        "itemDetailsPlaceholders": "수입품의 경우 수입자를 함께 표기 (병행수입의 경우 병행수입 여부로 대체 가능)",
+        "itemDetailsTitles": "제조자",
+        "itemDetailsValue": "YCH"
+      },
+      {
+        "itemDetailsCode": 101105,
+        "itemDetailsPlaceholders": "제조국은 법률상 중요정보이니 정확히 입력해주세요.",
+        "itemDetailsTitles": "제조국",
+        "itemDetailsValue": "KOREA"
+      },
+      {
+        "itemDetailsCode": 101106,
+        "itemDetailsPlaceholders": "",
+        "itemDetailsTitles": "세탁방법 및 취급시 주의사항",
+        "itemDetailsValue": "- 세탁시 제품 내부의 케어라벨을 반드시 참고해주세요 - 데님 제품 및 컬러 원단은 단독 세탁해주세요 - 드라이 클리닝을 권장합니다."
+      },
+      {
+        "itemDetailsCode": 101107,
+        "itemDetailsPlaceholders": "YYYYMM ex)201109",
+        "itemDetailsTitles": "제조연월",
+        "itemDetailsValue": "202502"
+      },
+      {
+        "itemDetailsCode": 101108,
+        "itemDetailsPlaceholders": "품질보증기간 및 수리/교환/반품 등의 보상방법 정보",
+        "itemDetailsTitles": "품질보증기준",
+        "itemDetailsValue": "제조자 : YCH 제조국 : KOREA 제조연월 : 2025.02 품질보증기준 : 전자상거래법 준수 AS책임자 : YCH 070-4446-3553"
+      },
+      {
+        "itemDetailsCode": 101109,
+        "itemDetailsPlaceholders": "29CM 고객센터 1660-2929 (발신전용), A/S 문의접수는 MY>1:1문의 이용",
+        "itemDetailsTitles": "A/S 책임자와 전화번호",
+        "itemDetailsValue": "제조자 : YCH 제조국 : KOREA 제조연월 : 2025.02 품질보증기준 : 전자상거래법 준수 AS책임자 : YCH 070-4446-3553"
+      }
+    ],
+    "itemImages": [
+      {
+        "addedOrderingIdx": 1,
+        "addedType": null,
+        "addedUrl": null,
+        "content": null,
+        "imageHeight": 1000,
+        "imageType": 3,
+        "imageUrl": "/item/202504/11f0112e96441fd0b1318b41f3672355.jpg",
+        "imageWidth": 1000,
+        "isLayout": false,
+        "itemImageMapping": [
+          {
+            "addedOrderingIdx": 0,
+            "addedType": null,
+            "addedUrl": null,
+            "content": null,
+            "imageHeight": 1000,
+            "imageUrl": "/item/202504/11f0112e96441fd0b1318b41f3672355.jpg",
+            "imageWidth": 1000,
+            "itemImageMappingNo": 248540603,
+            "itemImageNo": null,
+            "mappingOrdering": 0,
+            "size": 114860
+          }
+        ],
+        "itemImageNo": 270770442,
+        "orderingIdx": 1,
+        "size": 114860,
+        "title": null
+      },
+      {
+        "addedOrderingIdx": 2,
+        "addedType": null,
+        "addedUrl": null,
+        "content": null,
+        "imageHeight": 1000,
+        "imageType": 3,
+        "imageUrl": "/item/202504/11f0112e978440ebb1708de36464320f.jpg",
+        "imageWidth": 1000,
+        "isLayout": false,
+        "itemImageMapping": [
+          {
+            "addedOrderingIdx": 0,
+            "addedType": null,
+            "addedUrl": null,
+            "content": null,
+            "imageHeight": 1000,
+            "imageUrl": "/item/202504/11f0112e978440ebb1708de36464320f.jpg",
+            "imageWidth": 1000,
+            "itemImageMappingNo": 248540604,
+            "itemImageNo": null,
+            "mappingOrdering": 0,
+            "size": 120202
+          }
+        ],
+        "itemImageNo": 270770443,
+        "orderingIdx": 2,
+        "size": 120202,
+        "title": null
+      }
+    ],
+    "itemImportantInformation": null,
+    "itemModelSizes": [],
+    "itemName": "CROSS-OVER OFF-SHOULDER TOP BLACK (S24TO9011BK)",
+    "itemNo": 3135307,
+    "itemRelated": null,
+    "itemSizeCharts": [],
+    "itemStockStatus": 1,
+    "frontItemStockStatus": "ON_STOCK",
+    "isVisibleAvailableBeginDate": false,
+    "itemSubjects": [],
+    "itemType": 1,
+    "frontItemType": "TANGIBLE",
+    "supplyType": 2,
+    "isDependentSellType": false,
+    "limitedQty": 11,
+    "maxOrderQty": 0,
+    "mileage": 900,
+    "minOrderQty": 1,
+    "optionItems": {
+      "isTextOption": false,
+      "isTextRequired": false,
+      "layout": [
+        "SIZE"
+      ],
+      "list": [
+        {
+          "isLimitedQty": true,
+          "isUnlimitedMaxOrderQty": true,
+          "key": "SIZE34",
+          "limitedQty": 4,
+          "maxOrderQty": 0,
+          "minOrderQty": 0,
+          "optionCode": 673677560,
+          "optionNo": 32153291,
+          "itemNo": 3135307,
+          "frontOptionStockStatus": "ON_STOCK",
+          "optionStockStatus": 1,
+          "sellPrice": 0.0,
+          "title": "34",
+          "matchedOption": null,
+          "isMatchNavigate": false,
+          "tagLabelList": [],
+          "list": []
+        },
+        {
+          "isLimitedQty": true,
+          "isUnlimitedMaxOrderQty": true,
+          "key": "SIZE36",
+          "limitedQty": 7,
+          "maxOrderQty": 0,
+          "minOrderQty": 0,
+          "optionCode": 487894478,
+          "optionNo": 32153299,
+          "itemNo": 3135307,
+          "frontOptionStockStatus": "ON_STOCK",
+          "optionStockStatus": 1,
+          "sellPrice": 0.0,
+          "title": "36",
+          "matchedOption": null,
+          "isMatchNavigate": false,
+          "tagLabelList": [],
+          "list": []
+        },
+        {
+          "isLimitedQty": true,
+          "isUnlimitedMaxOrderQty": true,
+          "key": "SIZE38",
+          "limitedQty": 0,
+          "maxOrderQty": 0,
+          "minOrderQty": 0,
+          "optionCode": 512861814,
+          "optionNo": 32153292,
+          "itemNo": 3135307,
+          "frontOptionStockStatus": "SOLD_OUT",
+          "optionStockStatus": 5,
+          "sellPrice": 0.0,
+          "title": "38",
+          "matchedOption": null,
+          "isMatchNavigate": false,
+          "tagLabelList": [],
+          "list": []
+        }
+      ],
+      "placeHolder": null
+    },
+    "optionType": 1,
+    "orderImportantInformation": null,
+    "partnerBrand": {
+      "brandComment": "",
+      "brandCommentDate": "",
+      "defaultDeliveryPay": 3500,
+      "defaultDeliveryPayPlus": "3000.0",
+      "defaultDeliveryType": 9,
+      "defaultFreeBesongLimit": 300000,
+      "inputtedMileage": 0,
+      "isCouponMarginCheckUse": "F",
+      "isCouponUse": true,
+      "isPercentageMileage": true,
+      "mileageRewardType": 1
+    },
+    "partnerBrandNo": 69617,
+    "relationItemGroup": {
+      "relationItems": [],
+      "options": [
+        {
+          "optionId": 32153291,
+          "optionStatusTypeName": "ON_STOCK",
+          "optionStatusTypeDescription": "판매중",
+          "isSoldOut": false,
+          "isVisible": true,
+          "optionName": "[SIZE]34",
+          "optionItemName": "SIZE",
+          "optionItemValue": "34"
+        },
+        {
+          "optionId": 32153299,
+          "optionStatusTypeName": "ON_STOCK",
+          "optionStatusTypeDescription": "판매중",
+          "isSoldOut": false,
+          "isVisible": true,
+          "optionName": "[SIZE]36",
+          "optionItemName": "SIZE",
+          "optionItemValue": "36"
+        },
+        {
+          "optionId": 32153292,
+          "optionStatusTypeName": "SOLD_OUT",
+          "optionStatusTypeDescription": "일시품절",
+          "isSoldOut": true,
+          "isVisible": true,
+          "optionName": "[SIZE]38",
+          "optionItemName": "SIZE",
+          "optionItemValue": "38"
+        }
+      ]
+    },
+    "sellPrice": 90000,
+    "consumerPrice": 90000,
+    "shippingOutDuration": 3,
+    "shippingOutType": "STANDARD_SHIPPING",
+    "deliveryInfo": "해당 브랜드 제품으로만 300000원 이상 구매시 무료배송 ( 미만시 배송비 3500원 발생 )",
+    "useAdultCheck": false,
+    "useOption": true,
+    "useWithoutAvailableEndDate": true,
+    "useWithoutEstimatedShippingEndDate": true,
+    "visibleBeginTimestamp": "2025-03-31 09:34:59",
+    "soldQty": 0,
+    "isVisibleLimitedQty": null,
+    "isDisplaySellQty": false,
+    "isLimitedQty": false,
+    "isDisplayOptionQty": false,
+    "flatOptions": null,
+    "discountRate": 0,
+    "discountBeginTimestamp": null,
+    "discountEndTimestamp": null,
+    "isLocalGoods": null,
+    "useWithoutGiftVisibleEndDate": null,
+    "useWithoutDiscountEndDate": null,
+    "useGift": null,
+    "reasonForNotShipping": null,
+    "orderStatusAfterPaid": null,
+    "mileageRewardType": null,
+    "maxOrderQtyPerPerson": 0,
+    "membersOnlyOrderType": null,
+    "kcId": null,
+    "kcImporter": null,
+    "kcManufacturer": null,
+    "kcModelName": null,
+    "kcProductName": null,
+    "isSoldout": null,
+    "isPercentageMileage": null,
+    "isBadge": null,
+    "giftVisibleEndTimestamp": null,
+    "giftVisibleBeginTimestamp": null,
+    "concierge": null,
+    "offlineStoreList": null,
+    "internalDisplayPrice": {
+      "totalDiscountedItemPrice": 90000,
+      "totalDiscountedRate": 0.0
+    },
+    "frontCategoryInfo": [
+      {
+        "category1Code": 268100100,
+        "category1Name": "여성의류",
+        "category2Code": 268128100,
+        "category2Name": "해외브랜드",
+        "category3Code": 268128101,
+        "category3Name": "티셔츠"
+      },
+      {
+        "category1Code": 268100100,
+        "category1Name": "여성의류",
+        "category2Code": 268103100,
+        "category2Name": "상의",
+        "category3Code": 268103101,
+        "category3Name": "반소매 티셔츠"
+      },
+      {
+        "category1Code": 268100100,
+        "category1Name": "여성의류",
+        "category2Code": 268103100,
+        "category2Name": "상의",
+        "category3Code": 268103103,
+        "category3Name": "슬리브리스"
+      }
+    ],
+    "managedCategoryInfo": {
+      "category1Code": 243100100,
+      "category2Code": 243102100,
+      "category3Code": 243102103
+    },
+    "itemGroup": {
+      "itemGroupId": null,
+      "itemGroupName": null,
+      "itemNavigation": null,
+      "dependentSellMappingList": [],
+      "packageItemMappingList": []
+    },
+    "itemOrderMeta": {
+      "isGiftOnly": false,
+      "isNewUserOnly": false
+    },
+    "features": {
+      "isSavingMode": false,
+      "isActiveWaitingQueue": false,
+      "isActiveCart": true,
+      "isActiveAvailablePurchasePrice": true
+    },
+    "isMatchedItem": false,
+    "reviewAggregation": {
+      "totalCount": 6,
+      "averagePoint": 4.5,
+      "totalPhotoReviewCount": 4
+    },
+    "itemSourceSystemType": null
+  },
+  "message": null,
+  "errorCode": null
+}

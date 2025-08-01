@@ -1,8 +1,11 @@
 package com.loopers.interfaces.api.user;
 
+import static com.loopers.interfaces.api.ApiHeaders.USER_ID;
+
 import com.loopers.application.user.UserFacade;
 import com.loopers.application.user.UserInfo;
-import com.loopers.domain.user.UserCommand;
+import com.loopers.domain.command.user.UserCommand;
+import com.loopers.interfaces.api.ApiHeaders;
 import com.loopers.interfaces.api.ApiResponse;
 import com.loopers.interfaces.api.user.UserV1Dto.SignUpRequest;
 import com.loopers.interfaces.api.user.UserV1Dto.UserResponse;
@@ -32,7 +35,9 @@ public class UserV1Controller implements UserV1ApiSpec {
 
     @GetMapping("/me")
     @Override
-    public ApiResponse<UserResponse> getUser(@RequestHeader("X-USER-ID") String userId) {
+    public ApiResponse<UserResponse> getUser(
+        @RequestHeader(value = USER_ID) String userId
+    ) {
         UserInfo userInfo = userFacade.getUser(userId);
         return ApiResponse.success(UserResponse.from(userInfo));
     }

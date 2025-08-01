@@ -1,9 +1,9 @@
 package com.loopers.interfaces.api.user;
 
 import com.loopers.application.user.UserInfo;
-import com.loopers.domain.user.User;
-import com.loopers.domain.user.User.Gender;
-import com.loopers.domain.user.UserCommand;
+import com.loopers.domain.command.user.User;
+import com.loopers.domain.command.user.User.Gender;
+import com.loopers.domain.command.user.UserCommand;
 import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 import lombok.AccessLevel;

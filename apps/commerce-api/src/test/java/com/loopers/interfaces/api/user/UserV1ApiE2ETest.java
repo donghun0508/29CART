@@ -1,32 +1,29 @@
 package com.loopers.interfaces.api.user;
 
+import static com.loopers.interfaces.api.ApiHeaders.USER_ID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.instancio.Select.field;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.loopers.environment.annotations.E2ETest;
+import com.loopers.interfaces.api.ApiHeaders;
 import com.loopers.interfaces.api.ApiResponse;
 import com.loopers.interfaces.api.user.fixture.UserV1DtoFixture;
-import com.loopers.testcontainers.MySqlTestContainersConfig;
 import com.loopers.utils.DatabaseCleanUp;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
-@Import(MySqlTestContainersConfig.class)
+@E2ETest
 class UserV1ApiE2ETest {
 
     private static final String ENDPOINT = "/api/v1/users";
@@ -105,7 +102,7 @@ class UserV1ApiE2ETest {
             // arrange
             String userId = "12345";
             HttpHeaders headers = new HttpHeaders();
-            headers.set("X-USER-ID", userId);
+            headers.set(USER_ID, userId);
 
             // act
             ParameterizedTypeReference<ApiResponse<UserV1Dto.UserResponse>> responseType = new ParameterizedTypeReference<>() {
@@ -131,7 +128,7 @@ class UserV1ApiE2ETest {
                 .userId();
 
             HttpHeaders headers = new HttpHeaders();
-            headers.set("X-USER-ID", String.valueOf(userId));
+            headers.set(USER_ID, String.valueOf(userId));
 
             // act
             ParameterizedTypeReference<ApiResponse<UserV1Dto.UserResponse>> responseType = new ParameterizedTypeReference<>() {

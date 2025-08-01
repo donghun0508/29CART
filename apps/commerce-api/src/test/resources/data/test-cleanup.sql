@@ -1,0 +1,3 @@
+DELETE FROM product;
+DELETE FROM point;
+DELETE FROM users;

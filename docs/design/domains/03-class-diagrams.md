@@ -5,7 +5,7 @@ title: 29CART 도메인 모델
 classDiagram
     direction LR
 
-    class Member {
+    class User {
         -Point point
         +usePoints(Money amount) void
         +earnPoints(Money amount) void
@@ -13,10 +13,9 @@ classDiagram
     }
 
     class Point {
-        -Money balanace
+        -Money balance
         +deduct(Money amount) void
         +credit(Money amount) void
-        +hasEnoughBalance(Money amount) boolean
     }
 
     class Brand {
@@ -25,34 +24,34 @@ classDiagram
     }
 
     class Heart {
-        -Member member
+        -User user
         -Product product
-        +create(Member member, Product product) Heart
+        +create(User user, Product product) Heart
     }
 
     class Product {
-        -Quantity quantity
+        -Stock stock
         -Money price
         -Instruction instruction
-        +reduceInventory(Quantity quantity) void
-        +hasEnoughStock(Quantity quantity) boolean
-        +getPrice() Money
+        +decreaseStock(Stock) void
     }
 
     class Order {
-        -Member member
+        -User user
         -List~OrderLine~ orderlines
-        +createOrder(Member member) Order
-        +addOrderLine(Product product, Quantity quantity) void
+        +create(User user) Order
+        +addOrderLine(OrderCommand.OrderLine) void
         +getTotalAmount() Money
+        +getOrderLineCount() Integer
     }
 
     class OrderLine {
         -Money total
         -Product product
         -Quantity quantity
-        +createItem(Product product, Quantity quantity) OrderLine
-        +getLineTotal() Money
+        +createItem(Order, OrderCommand.OrderLine) OrderLine
+        +calculateLineTotal() Money
+        +hasSameProduct(OrderLine) boolean
     }
 
     class Payment {
@@ -61,9 +60,9 @@ classDiagram
         +create(Order order) Payment
     }
 
-    Member "1" --> "1" Point
-    Member "1" <-- "0..*" Order
-    Member "1" <-- "0..*" Heart
+    User "1" --> "1" Point
+    User "1" <-- "0..*" Order
+    User "1" <-- "0..*" Heart
     Order "1" --> "1..*" OrderLine
     Order "1" <-- "1" Payment
     OrderLine "1" --> "1" Product

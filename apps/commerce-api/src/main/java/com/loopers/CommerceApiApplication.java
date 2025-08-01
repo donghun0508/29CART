@@ -1,13 +1,17 @@
 package com.loopers;
 
+import static org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO;
+
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import java.util.TimeZone;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 
 @ConfigurationPropertiesScan
 @SpringBootApplication
+@EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 public class CommerceApiApplication {
 
     @PostConstruct

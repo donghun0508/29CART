@@ -15,16 +15,6 @@ public interface PointV1ApiSpec {
         summary = "포인트 조회",
         description = "헤더의 회원 ID로 포인트 정보를 조회합니다."
     )
-    @Parameter(
-        name = "X-USER-ID",
-        description = "조회할 회원의 ID",
-        required = true,
-        in = ParameterIn.HEADER,
-        schema = @Schema(
-            type = "string",
-            example = "user123"
-        )
-    )
     ApiResponse<PointV1Dto.PointResponse> getPoint(
         @Parameter(hidden = true)
         String userId
@@ -33,16 +23,6 @@ public interface PointV1ApiSpec {
     @Operation(
         summary = "포인트 충전",
         description = "헤더의 회원 ID로 포인트를 충전합니다."
-    )
-    @Parameter(
-        name = "X-USER-ID",
-        description = "조회할 회원의 ID",
-        required = true,
-        in = ParameterIn.HEADER,
-        schema = @Schema(
-            type = "string",
-            example = "user123"
-        )
     )
     ApiResponse<PointV1Dto.PointResponse> chargePoint(
         @Parameter(hidden = true)

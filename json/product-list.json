@@ -1,0 +1,128 @@
+{
+  "itemId": 3325061,
+  "itemType": "PRODUCT",
+  "itemUrl": {
+    "webLink": "https://product.29cm.co.kr/catalog/3325061?categoryLargeCode=268100100&categoryMediumCode=268128100&categorySmallCode=",
+    "appLink": "app29cm://web/https%3A%2F%2Fproduct.29cm.co.kr%2Fcatalog%2F3325061%3FcategoryLargeCode=268100100&categoryMediumCode=268128100&categorySmallCode="
+  },
+  "itemEvent": {
+    "eventProperties": {
+      "itemNo": 3325061,
+      "itemName": "(W) 쇼트 슬리브 크로셰 가디건 (White)",
+      "brandNo": 82257,
+      "brandName": "앤아더스토리즈",
+      "largeCategoryNo": 268100100,
+      "largeCategoryName": "여성의류",
+      "middleCategoryNo": 268128100,
+      "middleCategoryName": "해외브랜드",
+      "smallCategoryNo": 268128104,
+      "smallCategoryName": "니트웨어",
+      "price": 119000,
+      "discountRate": 0,
+      "isSoldout": false
+    }
+  },
+  "itemInfo": {
+    "itemType": "PRODUCT",
+    "productName": "(W) 쇼트 슬리브 크로셰 가디건 (White)",
+    "thumbnailUrl": "https://img.29cm.co.kr/item/202506/11f04cccda8258a18909c52883e4d2ea.jpg",
+    "isSoldOut": false,
+    "originalPrice": 119000,
+    "displayPrice": 119000,
+    "saleRate": 0.0,
+    "brandId": 82257,
+    "brandName": "앤아더스토리즈",
+    "reviewScore": 5.0,
+    "reviewCount": 1,
+    "likeCount": 92,
+    "isLiked": false,
+    "textBadges": [
+      {
+        "text": "무료배송",
+        "size": "small",
+        "variant": "secondary"
+      }
+    ],
+    "imageBadges": [],
+    "extraInfo": {
+      "categories": [
+        {
+          "largeCategoryCode": 268100100,
+          "mediumCategoryCode": 268128100,
+          "smallCategoryCode": 268128104
+        }
+      ]
+    }
+  },
+  "isOnSale": true
+}
+
+---
+public class ProductListQuery {
+
+  public static class Condition {
+
+}
+
+@Getter
+@Builder
+@RequiredArgsConstructor
+public static class Response {
+
+  private final Long itemId;
+  private final String itemType;
+  private final ItemUrl itemUrl;
+  private final ItemEvent itemEvent;
+  private final ItemInfo itemInfo;
+  private final boolean isOnSale;
+
+  @Getter
+  @Builder
+  @RequiredArgsConstructor
+  public static class ItemUrl {
+
+  private final String webLink;
+  private final String appLink;
+}
+
+@Getter
+@Builder
+@RequiredArgsConstructor
+public static class ItemEvent {
+
+  private final EventProperties eventProperties;
+
+  @Getter
+  @Builder
+  @RequiredArgsConstructor
+  public static class EventProperties {
+
+  private final Long itemNo;
+  private final String itemName;
+  private final Long brandNo;
+  private final String brandName;
+  private final Long price;
+  private final int discountRate;
+  private final boolean isSoldout;
+}
+}
+
+@Getter
+@Builder
+@RequiredArgsConstructor
+public static class ItemInfo {
+
+private final String itemType;
+private final String productName;
+private final String thumbnailUrl;
+private final boolean isSoldOut;
+private final Long originalPrice;
+private final Long displayPrice;
+private final double saleRate;
+private final Long brandId;
+private final String brandName;
+private final Long likeCount;
+private final boolean isLiked;
+}
+}
+}
