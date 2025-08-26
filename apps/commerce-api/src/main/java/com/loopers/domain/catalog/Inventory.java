@@ -7,6 +7,8 @@ import com.loopers.domain.shared.ProductItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public class Inventory {
 
@@ -24,6 +26,12 @@ public class Inventory {
         requireNonEmpty(products, "ProductManager.assign().products: 상품 목록은 비어있을 수 없습니다.");
         requireNonEmpty(purchaseProducts, "ProductManager.assign().purchaseProducts: 구매할 상품 목록은 비어있을 수 없습니다.");
         return new Inventory(products, purchaseProducts);
+    }
+
+    public static Inventory convert(List<Product> products, Map<Long, Long> purchaseProducts) {
+        Map<Long, Stock> purchaseProductMap = purchaseProducts.entrySet().stream()
+            .collect(Collectors.toMap(Entry::getKey, entry -> Stock.of(entry.getValue())));
+        return allocate(products, purchaseProductMap);
     }
 
     public void check() {

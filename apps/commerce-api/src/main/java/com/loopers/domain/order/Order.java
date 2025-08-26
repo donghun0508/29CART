@@ -13,6 +13,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import java.util.List;
+import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -106,5 +107,20 @@ public class Order extends AggregateRoot {
 
     public boolean isCouponUsed() {
         return false;
+    }
+
+    public List<Long> purchaseProductIds() {
+        return this.orderLines.getLines().stream().map(OrderLine::getProductId).toList();
+    }
+
+    public Map<Long, Long> purchaseProducts() {
+        return this.orderLines.getLines().stream()
+            .collect(
+                java.util.stream.Collectors.toMap(
+                    OrderLine::getProductId,
+                    l -> l.getQuantity().count(),
+                    Long::sum
+                )
+            );
     }
 }
