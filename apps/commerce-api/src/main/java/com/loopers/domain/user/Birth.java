@@ -1,12 +1,11 @@
 package com.loopers.domain.user;
 
-import jakarta.persistence.Embeddable;
+import static com.loopers.domain.shared.Preconditions.requireNonBlank;
 
+import jakarta.persistence.Embeddable;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
-
-import static com.loopers.domain.shared.Preconditions.requireNonBlank;
 
 @Embeddable
 public record Birth(String day) {

@@ -1,9 +1,10 @@
 package com.loopers.interfaces.api.heart;
 
 
-import com.loopers.application.heart.HeartResults.HeartResult;
+import com.loopers.application.heart.HeartResult;
 
 public class HeartV1Dto {
+
     public record Response(ProductInfo product) {
 
         public static Response from(HeartResult heartResult) {
@@ -11,22 +12,22 @@ public class HeartV1Dto {
         }
 
         public record ProductInfo(
-                String productName,
-                boolean isSoldOut,
-                Long price,
-                Long brandId,
-                String brandName,
-                Long likeCount
+            String productName,
+            boolean isSoldOut,
+            Long price,
+            Long brandId,
+            String brandName,
+            Long likeCount
         ) {
 
             public static ProductInfo from(HeartResult.ProductInfo product) {
                 return new ProductInfo(
-                        product.productName(),
-                        product.isSoldOut(),
-                        product.price(),
-                        product.brandId(),
-                        product.brandName(),
-                        product.likeCount()
+                    product.productName(),
+                    product.isSoldOut(),
+                    product.price(),
+                    product.brandId(),
+                    product.brandName(),
+                    product.likeCount()
                 );
             }
         }

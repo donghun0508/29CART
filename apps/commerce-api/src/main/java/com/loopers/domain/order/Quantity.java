@@ -4,7 +4,7 @@ import jakarta.persistence.Embeddable;
 
 @Embeddable
 public record Quantity(Long count) {
-    
+
     public Quantity {
         if (count == null || count < 0) {
             throw new IllegalArgumentException("수량은 0 이상이어야 합니다");
@@ -52,10 +52,5 @@ public record Quantity(Long count) {
 
     public static Quantity of(long count) {
         return new Quantity(count);
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%,d개", count);
     }
 }

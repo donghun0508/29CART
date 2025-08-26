@@ -1,10 +1,9 @@
 package com.loopers.domain.user;
 
-import jakarta.persistence.Embeddable;
-
-import java.util.regex.Pattern;
-
 import static com.loopers.domain.shared.Preconditions.requireNonBlank;
+
+import jakarta.persistence.Embeddable;
+import java.util.regex.Pattern;
 
 @Embeddable
 public record AccountId(String value) {

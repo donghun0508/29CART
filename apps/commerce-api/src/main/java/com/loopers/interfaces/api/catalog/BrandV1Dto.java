@@ -1,7 +1,7 @@
 package com.loopers.interfaces.api.catalog;
 
 
-import com.loopers.application.catalog.CatalogResults.BrandDetailResult;
+import com.loopers.application.catalog.BrandResult.BrandDetailResult;
 
 public class BrandV1Dto {
 
@@ -9,9 +9,9 @@ public class BrandV1Dto {
 
         public static GetDetail from(BrandDetailResult result) {
             return new GetDetail(
-                    result.brandId(),
-                    result.brandName(),
-                    result.totalProductCount()
+                result.brandId(),
+                result.brandName(),
+                result.totalProductCount()
             );
         }
     }

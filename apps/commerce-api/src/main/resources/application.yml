@@ -1,4 +1,5 @@
 server:
+  port: 8080
   shutdown: graceful
   tomcat:
     threads:
@@ -9,6 +10,10 @@ server:
     accept-count: 100 # 대기 큐 크기 (default : 100)
     keep-alive-timeout: 60s # 60s
   max-http-request-header-size: 8KB
+
+management:
+  server:
+    port: 8081
 
 spring:
   main:
@@ -23,6 +28,8 @@ spring:
       - logging.yml
       - monitoring.yml
       - redis.yml
+      - storage.yml
+      - external.yml
 
 springdoc:
   use-fqn: true
@@ -30,29 +37,29 @@ springdoc:
     path: /swagger-ui.html
 
 ---
-spring:
-  config:
-    activate:
-      on-profile: local, test
+spring.config.activate.on-profile: local, test
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full
+
+logging:
+  level:
+    com.example: debug
+---
+spring.config.activate.on-profile: dev
 
 ---
-spring:
-  config:
-    activate:
-      on-profile: dev
+spring.config.activate.on-profile: qa
 
 ---
-spring:
-  config:
-    activate:
-      on-profile: qa
-
----
-spring:
-  config:
-    activate:
-      on-profile: prd
+spring.config.activate.on-profile: prd
 
 springdoc:
   api-docs:
     enabled: false
+
+---
+spring.config.activate.on-profile: docker

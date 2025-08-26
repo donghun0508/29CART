@@ -18,7 +18,7 @@ public interface HeartV1ApiSpec {
 
     @Operation(summary = "내가 좋아요 한 상품 목록 조회", description = "내가 좋아요 한 상품 목록을 조회합니다.")
     ApiResponse<Page<HeartV1Dto.Response>> getHeartList(
-            @Parameter(description = "페이지 정보") PaginationRequest paginationRequest,
-            @Parameter(hidden = true) String userId
+        @Parameter(description = "페이지 정보") PaginationRequest paginationRequest,
+        @Parameter(hidden = true) String userId
     );
 }

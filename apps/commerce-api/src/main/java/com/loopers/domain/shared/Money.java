@@ -1,9 +1,9 @@
 package com.loopers.domain.shared;
 
-import jakarta.persistence.Embeddable;
-
 import static com.loopers.domain.shared.Preconditions.requireNonNull;
 import static com.loopers.domain.shared.Preconditions.requirePositive;
+
+import jakarta.persistence.Embeddable;
 
 @Embeddable
 public record Money(Long value) {

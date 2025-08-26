@@ -1,10 +1,9 @@
 package com.loopers.domain.heart;
 
-import org.springframework.data.repository.Repository;
-
 import java.util.Optional;
 
-public interface HeartRepository extends Repository<Heart, Long> {
+public interface HeartRepository {
+
     Heart save(Heart heart);
 
     Optional<Heart> findByUserIdAndTarget(Long userId, Target target);
@@ -12,4 +11,6 @@ public interface HeartRepository extends Repository<Heart, Long> {
     long count();
 
     void delete(Heart heart);
+
+    boolean existsByUserIdAndTarget(Long userId, Target target);
 }

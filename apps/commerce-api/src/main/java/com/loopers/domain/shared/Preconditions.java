@@ -3,8 +3,13 @@ package com.loopers.domain.shared;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Preconditions {
+
+    public static boolean isHit(Object param) {
+        return Objects.nonNull(param);
+    }
 
     public static String requireNonBlank(String value, String message) {
         if (value == null || value.isBlank()) {

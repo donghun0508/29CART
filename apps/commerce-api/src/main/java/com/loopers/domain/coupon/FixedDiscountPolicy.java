@@ -1,9 +1,9 @@
 package com.loopers.domain.coupon;
 
-import com.loopers.domain.shared.Money;
-
 import static com.loopers.domain.shared.Preconditions.requireNonNull;
 import static com.loopers.domain.shared.Preconditions.requirePositive;
+
+import com.loopers.domain.shared.Money;
 
 class FixedDiscountPolicy implements DiscountPolicy {
 

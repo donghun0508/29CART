@@ -2,7 +2,13 @@ package com.loopers.domain.coupon;
 
 import com.loopers.domain.BaseEntity;
 import com.loopers.domain.shared.Money;
-import jakarta.persistence.*;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,10 +26,10 @@ public class IssuedCoupon extends BaseEntity {
     private String code;
 
     @AttributeOverrides({
-            @AttributeOverride(name = "targetScope", column = @Column(name = "target_scope", nullable = false, updatable = false)),
-            @AttributeOverride(name = "targetId", column = @Column(name = "target_id", nullable = false, updatable = false)),
-            @AttributeOverride(name = "issuedAt", column = @Column(name = "issued_at", nullable = false, updatable = false)),
-            @AttributeOverride(name = "expiredAt", column = @Column(name = "expired_at", updatable = false))
+        @AttributeOverride(name = "targetScope", column = @Column(name = "target_scope", nullable = false, updatable = false)),
+        @AttributeOverride(name = "targetId", column = @Column(name = "target_id", nullable = false, updatable = false)),
+        @AttributeOverride(name = "issuedAt", column = @Column(name = "issued_at", nullable = false, updatable = false)),
+        @AttributeOverride(name = "expiredAt", column = @Column(name = "expired_at", updatable = false))
     })
     private Issuance issuance;
 
@@ -35,8 +41,8 @@ public class IssuedCoupon extends BaseEntity {
     private Long discountValue;
 
     @AttributeOverrides({
-            @AttributeOverride(name = "status", column = @Column(name = "status", nullable = false)),
-            @AttributeOverride(name = "usedAt", column = @Column(name = "used_at"))
+        @AttributeOverride(name = "status", column = @Column(name = "status", nullable = false)),
+        @AttributeOverride(name = "usedAt", column = @Column(name = "used_at"))
     })
     private CouponState couponState;
 
@@ -44,6 +50,10 @@ public class IssuedCoupon extends BaseEntity {
         this.issuance.validate(targetId);
         this.couponState = this.couponState.used();
         return this.discountType.calculate(orderAmount, discountValue);
+    }
+
+    public void cancel() {
+        this.couponState = this.couponState.canceled();
     }
 
     public boolean isUsed() {

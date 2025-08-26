@@ -1,12 +1,11 @@
 package com.loopers.domain.coupon;
 
+import static java.util.Objects.nonNull;
+
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-
 import java.time.ZonedDateTime;
-
-import static java.util.Objects.nonNull;
 
 @Embeddable
 public record Issuance(@Enumerated(EnumType.STRING) TargetScope targetScope,
@@ -14,6 +13,7 @@ public record Issuance(@Enumerated(EnumType.STRING) TargetScope targetScope,
                        ZonedDateTime issuedAt,
                        ZonedDateTime expiredAt
 ) {
+
     public void validate(Long targetId) {
         if (!this.targetId.equals(targetId)) {
             throw new IllegalStateException("Issuance.validate().targetId: 쿠폰 소유자가 아닙니다.");

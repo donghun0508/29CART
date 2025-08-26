@@ -2,9 +2,12 @@ rootProject.name = "29cart"
 
 include(
     ":apps:commerce-api",
+    ":apps:pg-simulator",
     ":modules:jpa",
     ":modules:redis",
-    ":modules:aop",
+    ":modules:feign",
+    ":modules:resilience",
+    ":modules:scheduler",
     ":supports:jackson",
     ":supports:logging",
     ":supports:monitoring",
@@ -30,8 +33,3 @@ pluginManagement {
         }
     }
 }
-
-include("modules:redis")
-include("modules:redis")
-
-include("modules:aop")

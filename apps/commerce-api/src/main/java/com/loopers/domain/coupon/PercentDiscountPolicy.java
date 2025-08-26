@@ -1,8 +1,8 @@
 package com.loopers.domain.coupon;
 
-import com.loopers.domain.shared.Money;
-
 import static com.loopers.domain.shared.Preconditions.requireNonNull;
+
+import com.loopers.domain.shared.Money;
 
 class PercentDiscountPolicy implements DiscountPolicy {
 

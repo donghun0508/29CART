@@ -1,6 +1,6 @@
 package com.loopers.data;
 
-import com.loopers.domain.catalog.entity.Brand;
+import com.loopers.domain.catalog.Brand;
 import com.loopers.fixture.BrandFixture;
 import com.loopers.fixture.UserFixture;
 import java.sql.Timestamp;

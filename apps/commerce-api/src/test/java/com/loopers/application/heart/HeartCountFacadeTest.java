@@ -2,24 +2,23 @@ package com.loopers.application.heart;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.loopers.application.heart.CriteriaCommand.LikeCriteria;
-import com.loopers.application.heart.CriteriaCommand.UnlikeCriteria;
+import com.loopers.application.heart.HeartCommand.LikeCommand;
+import com.loopers.application.heart.HeartCommand.UnlikeCommand;
+import com.loopers.application.user.UserCommand.UserRegisterCommand;
 import com.loopers.config.annotations.IntegrationTest;
-import com.loopers.domain.catalog.entity.Brand;
-import com.loopers.domain.catalog.repository.BrandRepository;
-import com.loopers.domain.catalog.vo.HeartCount;
-import com.loopers.domain.catalog.entity.Product;
-import com.loopers.domain.catalog.repository.ProductRepository;
+import com.loopers.domain.catalog.Brand;
+import com.loopers.domain.catalog.BrandRepository;
+import com.loopers.domain.catalog.HeartCount;
+import com.loopers.domain.catalog.Product;
+import com.loopers.domain.catalog.ProductRepository;
 import com.loopers.domain.heart.HeartRepository;
 import com.loopers.domain.heart.Target;
 import com.loopers.domain.heart.TargetType;
-import com.loopers.domain.user.Email;
 import com.loopers.domain.user.User;
-import com.loopers.domain.user.UserCreateCommand;
 import com.loopers.domain.user.UserRepository;
 import com.loopers.fixture.BrandFixture;
 import com.loopers.fixture.ProductFixture;
-import com.loopers.fixture.UserCreateCommandFixture;
+import com.loopers.fixture.UserRegisterCommandFixture;
 import com.loopers.utils.DatabaseCleanUp;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,8 +75,8 @@ class HeartCountFacadeTest {
 
         List<User> users = new ArrayList<>();
         for (int i = 0; i < userCount; i++) {
-            UserCreateCommand command = UserCreateCommandFixture.builder().email(new Email("Email" + i + "@gmail.com")).build();
-            User user = userRepository.save(User.from(command));
+            UserRegisterCommand command = UserRegisterCommandFixture.builder().email("Email" + i + "@gmail.com").build();
+            User user = userRepository.save(User.of(command.accountId(), command.email(), command.birth(), command.gender()));
             users.add(user);
         }
 
@@ -98,8 +97,8 @@ class HeartCountFacadeTest {
                 for (int requestIndex = 0; requestIndex < requestsPerUser; requestIndex++) {
                     executor.submit(() -> {
                         try {
-                            LikeCriteria likeCriteria = LikeCriteria.of(currentUser.getAccountId().value(), target.targetId(), target.targetType());
-                            heartFacade.heart(likeCriteria);
+                            LikeCommand likeCommand = LikeCommand.of(currentUser.getAccountId().value(), target.targetId(), target.targetType());
+                            heartFacade.heart(likeCommand);
                             successCount.incrementAndGet();
                         } catch (Exception e) {
                             failCount.incrementAndGet();
@@ -130,8 +129,8 @@ class HeartCountFacadeTest {
         int userCount = 10;
         List<User> users = new ArrayList<>();
         for (int i = 0; i < userCount; i++) {
-            UserCreateCommand command = UserCreateCommandFixture.builder().email(new Email("Email" + i + "@gmail.com")).build();
-            User user = userRepository.save(User.from(command));
+            UserRegisterCommand command = UserRegisterCommandFixture.builder().email("Email" + i + "@gmail.com").build();
+            User user = userRepository.save(User.of(command.accountId(), command.email(), command.birth(), command.gender()));
             users.add(user);
         }
 
@@ -141,8 +140,8 @@ class HeartCountFacadeTest {
         Target target = Target.of(product.getId(), TargetType.PRODUCT);
 
         for (User user : users) {
-            LikeCriteria likeCriteria = LikeCriteria.of(user.getAccountId().value(), target.targetId(), target.targetType());
-            heartFacade.heart(likeCriteria);
+            LikeCommand likeCommand = LikeCommand.of(user.getAccountId().value(), target.targetId(), target.targetType());
+            heartFacade.heart(likeCommand);
         }
 
         assertThat(heartRepository.count()).isEqualTo(userCount);
@@ -162,8 +161,8 @@ class HeartCountFacadeTest {
                 for (int requestIndex = 0; requestIndex < requestsPerUser; requestIndex++) {
                     executor.submit(() -> {
                         try {
-                            UnlikeCriteria unlikeCriteria = UnlikeCriteria.of(currentUser.getAccountId().value(), target.targetId(), target.targetType());
-                            heartFacade.unHeart(unlikeCriteria);
+                            UnlikeCommand unlikeCommand = UnlikeCommand.of(currentUser.getAccountId().value(), target.targetId(), target.targetType());
+                            heartFacade.unHeart(unlikeCommand);
                             successCount.incrementAndGet();
                         } catch (Exception e) {
                             failCount.incrementAndGet();

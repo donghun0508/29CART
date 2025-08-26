@@ -1,15 +1,20 @@
 package com.loopers.interfaces.api.user;
 
-import com.loopers.application.user.CriteriaQuery.GetUserCriteria;
-import com.loopers.application.user.UserResults.UserResult;
+import static com.loopers.interfaces.api.ApiHeaders.USER_ID;
+
 import com.loopers.application.user.UserFacade;
+import com.loopers.application.user.UserResult.UserDetailResult;
+import com.loopers.domain.user.AccountId;
 import com.loopers.interfaces.api.ApiResponse;
 import com.loopers.interfaces.api.user.UserV1Dto.UserResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import static com.loopers.interfaces.api.ApiHeaders.USER_ID;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,15 +26,14 @@ public class UserV1Controller implements UserV1ApiSpec {
     @Override
     @PostMapping
     public ApiResponse<UserResponse> signUp(@Valid @RequestBody UserV1Dto.SignUpRequest request) {
-        UserResult result = userFacade.signUp(request.criteria());
+        UserDetailResult result = userFacade.signUp(request.criteria());
         return ApiResponse.success(UserResponse.from(result));
     }
 
     @Override
     @GetMapping("/me")
     public ApiResponse<UserResponse> getUser(@RequestHeader(value = USER_ID) String userId) {
-        GetUserCriteria criteria = GetUserCriteria.of(userId);
-        UserResult userResult = userFacade.getUser(criteria);
-        return ApiResponse.success(UserResponse.from(userResult));
+        UserDetailResult userDetailResult = userFacade.getUser(AccountId.of(userId));
+        return ApiResponse.success(UserResponse.from(userDetailResult));
     }
 }

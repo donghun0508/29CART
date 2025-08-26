@@ -1,13 +1,20 @@
 package com.loopers.domain.user;
 
+import static com.loopers.domain.shared.Preconditions.requireNonNull;
+
 import com.loopers.domain.BaseEntity;
 import com.loopers.domain.shared.Money;
-import jakarta.persistence.*;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import static com.loopers.domain.shared.Preconditions.requireNonNull;
 
 @Getter(AccessLevel.PACKAGE)
 @Entity
@@ -17,19 +24,19 @@ public class Point extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
-            name = "user_id",
-            foreignKey = @ForeignKey(name = "FK_POINT_USER_ID"),
-            nullable = false,
-            updatable = false
+        name = "user_id",
+        foreignKey = @ForeignKey(name = "FK_POINT_USER_ID"),
+        nullable = false,
+        updatable = false
     )
     private User user;
 
     @AttributeOverride(
-            name = "value",
-            column = @Column(
-                    name = "balance",
-                    nullable = false
-            )
+        name = "value",
+        column = @Column(
+            name = "balance",
+            nullable = false
+        )
     )
     private Money balance;
 

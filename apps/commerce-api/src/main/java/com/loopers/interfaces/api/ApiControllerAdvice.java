@@ -5,6 +5,12 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.loopers.support.error.CoreException;
 import com.loopers.support.error.ErrorType;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -18,16 +24,22 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.server.ServerWebInputException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
 @RestControllerAdvice
 @Slf4j
 public class ApiControllerAdvice {
+
+    @ExceptionHandler
+    public ResponseEntity<ApiResponse<?>> handle(IllegalStateException e) {
+        log.warn("IllegalStateException : {}", e.getMessage(), e);
+        return failureResponse(ErrorType.BAD_REQUEST, e.getMessage());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ApiResponse<?>> handle(IllegalArgumentException e) {
+        log.warn("IllegalArgumentException : {}", e.getMessage(), e);
+        return failureResponse(ErrorType.BAD_REQUEST, e.getMessage());
+    }
+
     @ExceptionHandler
     public ResponseEntity<ApiResponse<?>> handle(CoreException e) {
         log.warn("CoreException : {}", e.getCustomMessage() != null ? e.getCustomMessage() : e.getMessage(), e);
@@ -69,7 +81,7 @@ public class ApiControllerAdvice {
         });
 
         String message = errors.isEmpty() ? "입력값 검증에 실패했습니다."
-                : String.format("입력값 검증에 실패했습니다. 오류 필드: %s", String.join(", ", errors.keySet()));
+            : String.format("입력값 검증에 실패했습니다. 오류 필드: %s", String.join(", ", errors.keySet()));
         return failureResponse(ErrorType.BAD_REQUEST, message);
     }
 

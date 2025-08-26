@@ -1,7 +1,7 @@
 package com.loopers.interfaces.api.catalog;
 
-import com.loopers.application.catalog.BrandQueryFacade;
-import com.loopers.application.catalog.CatalogResults.BrandDetailResult;
+import com.loopers.application.catalog.BrandFacade;
+import com.loopers.application.catalog.BrandResult.BrandDetailResult;
 import com.loopers.interfaces.api.ApiResponse;
 import com.loopers.interfaces.api.catalog.BrandV1Dto.GetDetail;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/brands")
 public class BrandV1Controller implements BrandV1ApiSpec {
 
-    private final BrandQueryFacade brandQueryFacade;
+    private final BrandFacade brandFacade;
 
     @Override
     @GetMapping("/{brandId}")
     public ApiResponse<GetDetail> getBrandDetail(@PathVariable Long brandId) {
-        BrandDetailResult result = brandQueryFacade.getBrandDetail(brandId);
+        BrandDetailResult result = brandFacade.getBrandDetail(brandId);
         return ApiResponse.success(GetDetail.from(result));
     }
 }

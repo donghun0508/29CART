@@ -11,14 +11,12 @@ public class ProductCondition {
             this(brandId, sort != null && !sort.isBlank() ? SortType.valueOf(sort.toUpperCase()) : SortType.LATEST, pageable);
         }
 
-        public enum SortType {
-            LATEST,
-            PRICE_ASC,
-            LIKES_DESC
+        public int pageSize() {
+            return pageable.getPageSize();
         }
 
-        public int getPageNumber() {
-            return pageable.getPageNumber();
+        public long offSet() {
+            return pageable.getOffset();
         }
     }
 

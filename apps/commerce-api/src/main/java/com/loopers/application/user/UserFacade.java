@@ -1,13 +1,11 @@
 package com.loopers.application.user;
 
-import com.loopers.application.user.CriteriaCommand.UserPointChargeCriteria;
-import com.loopers.application.user.CriteriaCommand.UserRegisterCriteria;
-import com.loopers.application.user.CriteriaQuery.GetUserCriteria;
-import com.loopers.application.user.CriteriaQuery.GetUserPointCriteria;
-import com.loopers.application.user.UserResults.UserPointResult;
-import com.loopers.application.user.UserResults.UserResult;
+import com.loopers.application.user.UserCommand.UserChargePointCommand;
+import com.loopers.application.user.UserCommand.UserRegisterCommand;
+import com.loopers.application.user.UserResult.UserDetailResult;
+import com.loopers.application.user.UserResult.UserPointResult;
+import com.loopers.domain.user.AccountId;
 import com.loopers.domain.user.User;
-import com.loopers.domain.user.UserCreateCommand;
 import com.loopers.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,26 +19,31 @@ public class UserFacade {
 
     private final UserService userService;
 
-    public UserResult signUp(UserRegisterCriteria criteria) {
-        UserCreateCommand command = criteria.command();
-        User user = userService.create(command);
-        return UserResult.from(user);
+    public UserDetailResult signUp(UserRegisterCommand command) {
+        User createUser = User.of(
+            command.accountId(),
+            command.email(),
+            command.birth(),
+            command.gender()
+        );
+        User savedUser = userService.create(createUser);
+        return UserDetailResult.from(savedUser);
     }
 
     @Transactional
-    public UserPointResult chargePoint(UserPointChargeCriteria criteria) {
-        User user = userService.findByAccountId(criteria.accountId());
-        user.chargePoint(criteria.amount());
+    public UserPointResult chargePoint(UserChargePointCommand command) {
+        User user = userService.findByAccountId(command.accountId());
+        user.chargePoint(command.amount());
         return UserPointResult.from(user);
     }
 
-    public UserResult getUser(GetUserCriteria criteria) {
-        User user = userService.findByAccountId(criteria.accountId());
-        return UserResult.from(user);
+    public UserDetailResult getUser(AccountId accountId) {
+        User user = userService.findByAccountId(accountId);
+        return UserDetailResult.from(user);
     }
 
-    public UserPointResult getPoint(GetUserPointCriteria criteria) {
-        User user = userService.findByAccountId(criteria.accountId());
+    public UserPointResult getPoint(AccountId accountId) {
+        User user = userService.findByAccountId(accountId);
         return UserPointResult.from(user);
     }
 }

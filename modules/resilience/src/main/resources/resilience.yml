@@ -1,0 +1,64 @@
+resilience4j:
+  log.level: DEBUG
+  circuitbreaker:
+    circuitBreakerAspectOrder: -4
+    configs:
+      default:
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 60
+        slow-call-duration-threshold: 5000
+        wait-duration-in-open-state: 10000
+        minimum-number-of-calls: 10
+        sliding-window-size: 20
+        sliding-window-type: COUNT_BASED
+        permitted-number-of-calls-in-half-open-state: 1
+        automatic-transition-from-open-to-half-open-enabled: true
+        record-exceptions:
+          - java.net.ConnectException
+          - java.net.SocketTimeoutException
+          - java.net.SocketException
+          - java.net.NoRouteToHostException
+          - org.springframework.web.client.HttpServerErrorException
+          - org.springframework.web.client.ResourceAccessException
+          - feign.RetryableException
+          - feign.FeignException.InternalServerError
+          - java.io.IOException
+        ignore-exceptions:
+          - java.lang.IllegalArgumentException
+          - java.lang.IllegalStateException
+          - org.springframework.web.client.HttpClientErrorException
+
+  retry:
+    retryAspectOrder: -3
+    configs:
+      default:
+        max-attempts: 5
+        wait-duration: 500
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+        retry-exceptions:
+          - java.net.ConnectException
+          - java.net.SocketTimeoutException
+          - java.net.SocketException
+          - java.net.NoRouteToHostException
+          - org.springframework.web.client.ResourceAccessException
+          - org.springframework.web.client.HttpServerErrorException
+          - feign.RetryableException
+          - feign.FeignException.InternalServerError
+          - java.io.IOException
+
+  timelimiter:
+    configs:
+      default:
+        timeout-duration: 10000
+        cancel-running-future: true
+
+
+
+management:
+  metrics:
+    distribution:
+      percentiles:
+        resilience4j.circuitbreaker.calls: 0.5, 0.95, 0.99
+        resilience4j.retry.calls: 0.5, 0.95, 0.99
+        resilience4j.timelimiter.calls: 0.5, 0.95, 0.99

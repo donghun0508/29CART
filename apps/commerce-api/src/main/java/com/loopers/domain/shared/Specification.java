@@ -1,6 +1,7 @@
 package com.loopers.domain.shared;
 
 public interface Specification<T> {
+
     boolean isSatisfiedBy(T expected, T candidate);
 
     default Specification<T> and(Specification<T> other) {
@@ -16,6 +17,7 @@ public interface Specification<T> {
     }
 
     class AndSpecification<T> implements Specification<T> {
+
         private final Specification<T> left;
         private final Specification<T> right;
 
@@ -31,6 +33,7 @@ public interface Specification<T> {
     }
 
     class OrSpecification<T> implements Specification<T> {
+
         private final Specification<T> left;
         private final Specification<T> right;
 
@@ -46,6 +49,7 @@ public interface Specification<T> {
     }
 
     class NotSpecification<T> implements Specification<T> {
+
         private final Specification<T> spec;
 
         public NotSpecification(Specification<T> spec) {

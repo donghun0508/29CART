@@ -2,7 +2,7 @@ package com.loopers.domain.user;
 
 import com.loopers.config.annotations.UnitTest;
 import com.loopers.domain.shared.Money;
-import com.loopers.fixture.UserCreateCommandFixture;
+import com.loopers.fixture.UserRegisterCommandFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,25 +20,17 @@ class UserTest {
     @Nested
     class Create {
 
-        @DisplayName("회원 생성 명령이 null인 경우 예외를 반환한다.")
-        @ParameterizedTest
-        @NullSource
-        void throwsException_whenCommandIsNull(UserCreateCommand invalidCommand) {
-            assertThatThrownBy(() -> User.from(invalidCommand))
-                    .isInstanceOf(IllegalArgumentException.class);
-        }
-
         @DisplayName("유효한 회원 생성 명령을 전달하면 회원 도메인을 생성한다.")
         @Test
         void createMember() {
-            var command = UserCreateCommandFixture.builder().build();
+            var command = UserRegisterCommandFixture.builder().build();
 
-            var member = User.from(command);
+            var member = User.of(command.accountId(), command.email(), command.birth(), command.gender());
 
             assertThat(member).isNotNull();
-            assertThat(member.getAccountId()).isEqualTo(command.accountId());
-            assertThat(member.getEmail()).isEqualTo(command.email());
-            assertThat(member.getBirth()).isEqualTo(command.birth());
+            assertThat(member.getAccountId().value()).isEqualTo(command.accountId());
+            assertThat(member.getEmail().address()).isEqualTo(command.email());
+            assertThat(member.getBirth().day()).isEqualTo(command.birth());
             assertThat(member.getTotalPoint()).isEqualTo(Money.ZERO);
             assertThat(member.getGender()).isEqualTo(command.gender());
         }
@@ -46,14 +38,14 @@ class UserTest {
 
     @DisplayName("회원 포인트 충전 시, ")
     @Nested
-    class Point {
+    class PointSourceTEmp {
 
         @DisplayName("포인트 충전 시 비용이 null인 경우 예외를 발생한다.")
         @ParameterizedTest
         @NullSource
         void throwsException_whenIncreaseBalanceCommandIsNull(Money invalidAmount) {
-            var command = UserCreateCommandFixture.builder().build();
-            var member = User.from(command);
+            var command = UserRegisterCommandFixture.builder().build();
+            var member = User.of(command.accountId(), command.email(), command.birth(), command.gender());
 
             assertThatThrownBy(() -> member.chargePoint(invalidAmount))
                     .isInstanceOf(IllegalArgumentException.class);
@@ -63,8 +55,9 @@ class UserTest {
         @ParameterizedTest
         @ValueSource(longs = {0L, -100L, -1000L})
         void throwsException_whenIncreaseBalanceAmountIsZeroOrNegative(Long invalidAmount) {
-            var command = UserCreateCommandFixture.builder().build();
-            var member = User.from(command);
+            var command = UserRegisterCommandFixture.builder().build();
+            var member = User.of(command.accountId(), command.email(), command.birth(), command.gender());
+
             var chargeAmount = Money.of(invalidAmount);
 
             assertThatThrownBy(() -> member.chargePoint(chargeAmount))
@@ -74,8 +67,8 @@ class UserTest {
         @DisplayName("포인트 충전 시 비용이 가장 큰 경우 정상 충전된다.")
         @Test
         void increaseBalancePoint_whenMaxAmount() {
-            var command = UserCreateCommandFixture.builder().build();
-            var member = User.from(command);
+            var command = UserRegisterCommandFixture.builder().build();
+            var member = User.of(command.accountId(), command.email(), command.birth(), command.gender());
             var chargeAmount = Money.of(Long.MAX_VALUE);
 
             member.chargePoint(chargeAmount);
@@ -86,8 +79,8 @@ class UserTest {
         @DisplayName("포인트 충전 시 비용이 가장 큰 경우 보다 큰 경우 예외가 발생한다.")
         @Test
         void increaseBalancePoint_whenOverflowAmount() {
-            var command = UserCreateCommandFixture.builder().build();
-            var member = User.from(command);
+            var command = UserRegisterCommandFixture.builder().build();
+            var member = User.of(command.accountId(), command.email(), command.birth(), command.gender());
             var chargeAmount = Money.of(Long.MAX_VALUE);
             member.chargePoint(chargeAmount);
 
@@ -98,8 +91,8 @@ class UserTest {
         @DisplayName("유효한 금액을 전달하면 포인트를 충전한다.")
         @Test
         void increaseBalancePoint_whenValidAmount() {
-            var command = UserCreateCommandFixture.builder().build();
-            var member = User.from(command);
+            var command = UserRegisterCommandFixture.builder().build();
+            var member = User.of(command.accountId(), command.email(), command.birth(), command.gender());
             var chargeAmount = Money.of(1000L);
 
             member.chargePoint(chargeAmount);

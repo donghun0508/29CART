@@ -20,4 +20,8 @@ public record Target(Long targetId, @Enumerated(value = EnumType.STRING) TargetT
         return new Target(targetId, targetType);
     }
 
+    public static Target asProduct(Long productId) {
+        return new Target(productId, TargetType.PRODUCT);
+    }
+
 }

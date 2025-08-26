@@ -1,6 +1,6 @@
 package com.loopers.domain.catalog;
 
-import com.loopers.domain.catalog.entity.Product;
+import com.loopers.domain.heart.Target;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +18,7 @@ public class ProductRead {
     private boolean isSoldOut;
     private boolean isLiked;
 
-    public ProductRead(Product product) {
+    private ProductRead(Product product) {
         this.id = product.getId();
         this.name = product.getName();
         this.unitPrice = product.getUnitPrice().value();
@@ -27,5 +27,15 @@ public class ProductRead {
         this.brandId = product.getBrand().getId();
         this.brandName = product.getBrand().getName();
         this.isSoldOut = product.isSoldOut();
+    }
+
+    public static ProductRead from(Product product) {
+        ProductRead productRead = new ProductRead(product);
+        productRead.isLiked = false;
+        return productRead;
+    }
+
+    public Target toTarget() {
+        return Target.asProduct(this.id);
     }
 }

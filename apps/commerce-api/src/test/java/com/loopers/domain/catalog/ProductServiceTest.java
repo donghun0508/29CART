@@ -1,8 +1,6 @@
 package com.loopers.domain.catalog;
 
 import com.loopers.config.annotations.IntegrationTest;
-import com.loopers.domain.catalog.entity.Product;
-import com.loopers.domain.catalog.service.ProductService;
 import com.loopers.support.error.CoreException;
 import com.loopers.support.error.ErrorType;
 import com.loopers.utils.DatabaseCleanUp;

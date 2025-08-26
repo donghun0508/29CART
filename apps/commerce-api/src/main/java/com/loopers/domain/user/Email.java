@@ -1,16 +1,15 @@
 package com.loopers.domain.user;
 
-import jakarta.persistence.Embeddable;
-
-import java.util.regex.Pattern;
-
 import static com.loopers.domain.shared.Preconditions.requireNonBlank;
+
+import jakarta.persistence.Embeddable;
+import java.util.regex.Pattern;
 
 @Embeddable
 public record Email(String address) {
 
     private static final Pattern EMAIL_REGEX = Pattern.compile(
-            "^[a-zA-Z0-9](?:[a-zA-Z0-9_-]*[a-zA-Z0-9]|[a-zA-Z0-9_-]*\\.[a-zA-Z0-9](?:[a-zA-Z0-9_-]*[a-zA-Z0-9])*)*@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9]|[a-zA-Z0-9-]*\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])*)*\\.[a-zA-Z]{2,6}$"
+        "^[a-zA-Z0-9](?:[a-zA-Z0-9_-]*[a-zA-Z0-9]|[a-zA-Z0-9_-]*\\.[a-zA-Z0-9](?:[a-zA-Z0-9_-]*[a-zA-Z0-9])*)*@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9]|[a-zA-Z0-9-]*\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])*)*\\.[a-zA-Z]{2,6}$"
     );
 
     public Email {
