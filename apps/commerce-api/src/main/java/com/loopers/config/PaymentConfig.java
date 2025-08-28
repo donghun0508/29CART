@@ -4,9 +4,12 @@ import static com.loopers.config.PaymentConfig.SimulatorProviderConfig.Operation
 import static com.loopers.config.PaymentConfig.SimulatorProviderConfig.OperationConfig.OperationPaymentRequestConfig.Constants.OPERATION_PAYMENT_REQUEST;
 import static com.loopers.config.PaymentConfig.SimulatorProviderConfig.OperationConfig.OperationPaymentRequestConfig.Constants.RETRY_PAYMENT;
 
-import com.loopers.infrastructure.client.PaymentRequestRetryPolicy;
+import com.loopers.infrastructure.client.payment.PaymentRequestRetryPolicy;
+import com.loopers.infrastructure.client.payment.PaymentGatewaySimulatorClientErrorDecoder;
 import com.loopers.resilience.Resilience4jConfigFactory;
+import feign.Logger;
 import feign.RequestInterceptor;
+import feign.codec.ErrorDecoder;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.retry.Retry;
 import java.time.Duration;
@@ -65,6 +68,11 @@ public class PaymentConfig {
         @Bean
         public RequestInterceptor requestInterceptor(PaymentProperties properties) {
             return template -> template.header("X-USER-ID", properties.getCompany());
+        }
+
+        @Bean
+        public ErrorDecoder simulatorProviderErrorDecoder() {
+            return new PaymentGatewaySimulatorClientErrorDecoder();
         }
 
         @Bean("paymentRequestTaskExecutor")

@@ -1,6 +1,8 @@
 package com.loopers.domain.heart;
 
-import com.loopers.domain.BaseEntity;
+import com.loopers.domain.heart.HeartEvent.HeartCreatedEvent;
+import com.loopers.domain.heart.HeartEvent.HeartRemovedEvent;
+import com.loopers.domain.shared.AggregateRoot;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -20,10 +22,10 @@ import lombok.NoArgsConstructor;
         name = "UK_HEART_USER_TARGET_TYPE",
         columnNames = {"user_id", "target_id", "target_type"}
     )
-}
+    }
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Heart extends BaseEntity {
+public class Heart extends AggregateRoot {
 
     @Column(
         name = "user_id",
@@ -39,11 +41,14 @@ public class Heart extends BaseEntity {
     private Target target;
 
     public static Heart from(Long userId, Target target) {
-
         Heart heart = new Heart();
         heart.userId = userId;
         heart.target = target;
-
+        heart.registerEvent(new HeartCreatedEvent(heart)); // 이벤트 등록
         return heart;
+    }
+
+    public void remove() {
+        this.registerEvent(new HeartRemovedEvent(this));
     }
 }

@@ -4,6 +4,7 @@ import static com.loopers.domain.shared.Preconditions.requireNonBlank;
 
 import jakarta.persistence.Embeddable;
 import java.util.UUID;
+import org.jetbrains.annotations.NotNull;
 
 @Embeddable
 public record OrderNumber(String number) {
@@ -25,5 +26,11 @@ public record OrderNumber(String number) {
 
     public static OrderNumber of(String number) {
         return new OrderNumber(number);
+    }
+
+    @NotNull
+    @Override
+    public String toString() {
+        return number;
     }
 }

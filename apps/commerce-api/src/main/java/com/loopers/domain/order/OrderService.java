@@ -2,7 +2,6 @@ package com.loopers.domain.order;
 
 import com.loopers.support.error.CoreException;
 import com.loopers.support.error.ErrorType;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +13,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     @Transactional
-    public Order create(Order order) {
+    public Order save(Order order) {
         return orderRepository.save(order);
     }
 
@@ -37,15 +36,5 @@ public class OrderService {
         return orderRepository.findByOrderNumberWithLock(orderNumber)
             .orElseThrow(() -> new CoreException(ErrorType.NOT_FOUND,
                 "OrderService.findByOrderNumberWithLock(): 주문을 찾을 수 없습니다. 주문 번호: " + orderNumber.number()));
-    }
-
-    @Transactional
-    public Optional<Order> findByIdempotencyKeyWithLockOptional(IdempotencyKey idempotencyKey) {
-        return orderRepository.findByIdempotencyKeyWithLock(idempotencyKey);
-    }
-
-    @Transactional
-    public Optional<Order> findByIdempotencyKeyOptional(IdempotencyKey idempotencyKey) {
-        return orderRepository.findByIdempotencyKey(idempotencyKey);
     }
 }

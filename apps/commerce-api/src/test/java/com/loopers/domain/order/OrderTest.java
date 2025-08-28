@@ -3,8 +3,11 @@ package com.loopers.domain.order;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.loopers.config.annotations.UnitTest;
+import com.loopers.domain.payment.PointMethod;
 import com.loopers.domain.shared.Money;
+import com.loopers.domain.shared.StockReservations.StockReservation;
 import com.loopers.fixture.OrderItemFixture;
+import com.loopers.fixture.ProductItemFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,16 +23,16 @@ class OrderTest {
         @Test
         void createOrder() {
             var buyerId = 1L;
-            var orderItems = OrderItemFixture.builder().orderItems(5).build();
+            var reservations = ProductItemFixture.builder().productItems(5).build();
 
-            Order order = Order.from(buyerId, IdempotencyKey.generate(), orderItems);
+            Order order = Order.create(buyerId, IdempotencyKey.generate(), null, reservations, new PointMethod());
 
             assertThat(order).isNotNull();
             assertThat(order.getBuyerId()).isEqualTo(buyerId);
 
             assertThat(order.getOrderLines().getLines())
-                .hasSize(orderItems.size())
-                .zipSatisfy(orderItems, (orderLine, productItem) -> {
+                .hasSize(reservations.size())
+                .zipSatisfy(reservations, (orderLine, productItem) -> {
                     assertThat(orderLine.getProductId()).isEqualTo(productItem.productId());
                     assertThat(orderLine.getPrice()).isEqualTo(productItem.price());
                     assertThat(orderLine.getQuantity()).isEqualTo(productItem.quantity());
@@ -42,9 +45,9 @@ class OrderTest {
             var buyerId = 1L;
             var orderItems = OrderItemFixture.builder().orderItems(5).build();
 
-            Order order = Order.from(buyerId, IdempotencyKey.generate(), orderItems);
+            Order order = Order.create(buyerId, IdempotencyKey.generate(), null, orderItems, new PointMethod());
 
-            Money expectedTotalPrice = orderItems.stream().map(OrderItem::totalPrice).reduce(Money.ZERO, Money::add);
+            Money expectedTotalPrice = orderItems.stream().map(StockReservation::totalPrice).reduce(Money.ZERO, Money::add);
 
             assertThat(order.paidAmount()).isEqualTo(expectedTotalPrice);
         }

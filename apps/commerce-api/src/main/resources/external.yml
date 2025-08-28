@@ -7,6 +7,7 @@ external:
         initial-delay: ${PG_SYNC_INTERVAL:5000}
         base-url: ${PG_BASE_URL:http://localhost:8082}
         callback-url: ${PG_CALLBACK_URL:http://localhost:8080/api/v1/payments/callback}
+#        callback-url: ${PG_CALLBACK_URL:http://host.docker.internal:8080/api/v1/payments/callback}
         connection:
           timeout:
             connect: ${PG_CONNECT_TIMEOUT:3000}
@@ -14,15 +15,6 @@ external:
           pool:
             max-size: ${PG_POOL_MAX_SIZE:10}
             idle-timeout: ${PG_POOL_IDLE_TIMEOUT:30000}
-        executor:
-          core-pool-size: 10
-          max-pool-size: 50
-          queue-capacity: 100
-          thread-name-prefix: payment-api-task-executor-
-          keep-alive-seconds: 300
-          allow-core-thread-timeout: true
-          wait-for-tasks-to-complete-on-shutdown: true
-          await-termination-seconds: 60
         operations:
           payment-request:
             resilience4j:

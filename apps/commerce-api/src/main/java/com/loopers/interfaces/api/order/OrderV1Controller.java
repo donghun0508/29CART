@@ -3,7 +3,7 @@ package com.loopers.interfaces.api.order;
 import static com.loopers.interfaces.api.ApiHeaders.USER_ID;
 
 import com.loopers.application.order.OrderCommand.OrderRequestCommand;
-import com.loopers.application.order.OrderPaymentFacade;
+import com.loopers.application.order.OrderFacade;
 import com.loopers.domain.order.IdempotencyKey;
 import com.loopers.interfaces.api.ApiResponse;
 import com.loopers.interfaces.api.order.OrderV1Dto.OrderRequest;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/orders")
 public class OrderV1Controller implements OrderV1ApiSpec {
 
-    private final OrderPaymentFacade orderPaymentFacade;
+    private final OrderFacade orderFacade;
 
     @Override
     @PostMapping
@@ -30,7 +30,7 @@ public class OrderV1Controller implements OrderV1ApiSpec {
     ) {
         OrderRequestCommand command = OrderRequestCommand.of(userId, request.idempotencyKey(), request.couponId(),
             request.toPurchaseMap(), request.paymentSpec());
-        orderPaymentFacade.order(command);
+        orderFacade.place(command);
         return ApiResponse.success();
     }
 

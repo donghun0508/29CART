@@ -1,49 +1,69 @@
 package com.loopers.application.order;
 
 import com.loopers.application.order.OrderCommand.OrderRequestCommand;
-import com.loopers.domain.catalog.Inventory;
-import com.loopers.domain.catalog.Product;
 import com.loopers.domain.catalog.ProductService;
+import com.loopers.domain.catalog.Products;
+import com.loopers.domain.coupon.IssuedCoupon;
 import com.loopers.domain.coupon.IssuedCouponService;
 import com.loopers.domain.order.Order;
-import com.loopers.domain.order.OrderEvent.OrderCreatedEvent;
+import com.loopers.domain.order.OrderNumber;
 import com.loopers.domain.order.OrderService;
+import com.loopers.domain.shared.DomainEventPublisher;
+import com.loopers.domain.shared.OrderCoupon;
+import com.loopers.domain.shared.StockReservations;
 import com.loopers.domain.user.User;
 import com.loopers.domain.user.UserService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class OrderFacade {
 
     private final UserService userService;
+    private final IssuedCouponService issuedCouponService;
     private final ProductService productService;
     private final OrderService orderService;
-    private final OrderItemConverter orderItemConverter;
-    private final IssuedCouponService issuedCouponService;
+    private final DomainEventPublisher domainEventPublisher;
 
     @Transactional
-    public OrderCreatedEvent createOrder(OrderRequestCommand command) {
-        orderService.findByIdempotencyKeyOptional(command.idempotencyKey())
-            .ifPresent(order -> {
-                throw new IllegalStateException("이미 주문이 존재합니다. 주문 번호: " + order.getOrderNumber().number());
-            });
-
+    public void place(OrderRequestCommand command) {
         User buyer = userService.findByAccountId(command.accountId());
-        List<Product> actualProducts = productService.findAll(command.purchaseProductIds());
+        Products products = productService.findAllCollection(command.productIds());
 
-        // 재고 확인
-        Inventory inventory = Inventory.allocate(actualProducts, command.purchaseProducts());
-        inventory.check();
+        // 선 재고 차감
+        StockReservations reservations = products.reserve(command.purchaseProducts());
+
+        // 쿠폰 금액 계산
+        OrderCoupon orderCoupon = issuedCouponService.findByIdOptional(command.couponId())
+            .map(coupon -> coupon.calculate(buyer.getId(), reservations.totalPrice()))
+            .orElse(OrderCoupon.empty(reservations.totalPrice()));
 
         // 주문 생성
-        Order order = orderService.create(Order.from(buyer.getId(), command.idempotencyKey(), orderItemConverter.convert(inventory.items())));
+        Order order = Order.create(buyer.getId(), command.idempotencyKey(), orderCoupon, reservations.getStockReservations(), command.paymentMethod());
+        orderService.save(order);
 
-        // 쿠폰 사용
-        command.findCoupon().map(issuedCouponService::findByIdWithLock).ifPresent(order::applyCoupon);
-        return new OrderCreatedEvent(order);
+        // 이벤트 발행
+        domainEventPublisher.publishEvent(order.events());
+    }
+
+    @Transactional
+    public void complete(OrderNumber orderNumber) {
+        Order order = orderService.findByOrderNumber(orderNumber);
+        order.complete();
+        domainEventPublisher.publishEvent(order.events());
+    }
+
+    @Transactional
+    public void fail(OrderNumber orderNumber) {
+        Order order = orderService.findByOrderNumber(orderNumber);
+        order.fail();
+        order.hasCoupon()
+            .map(orderCoupon -> issuedCouponService.findById(orderCoupon.issuedCouponId()))
+            .ifPresent(IssuedCoupon::cancel);
+        domainEventPublisher.publishEvent(order.events());
     }
 }

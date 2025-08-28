@@ -1,7 +1,11 @@
 package com.loopers.domain.payment;
 
+import static com.loopers.domain.payment.PaymentStatus.PENDING;
+import static com.loopers.domain.payment.PaymentStatus.REQUESTED;
+
 import com.loopers.domain.payment.PaymentClientData.PaymentClientResponse;
-import com.loopers.domain.payment.PaymentEvent.CardPaymentCreatedEvent;
+import com.loopers.domain.payment.PaymentEvent.CardPaymentRequestedEvent;
+import com.loopers.domain.payment.PaymentEvent.PaymentCompletedEvent;
 import com.loopers.domain.shared.Money;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
@@ -41,37 +45,28 @@ public class CardPayment extends Payment {
     @Column(name = "transaction_id")
     private String transactionId;
 
-    public static CardPayment initiate(String orderNumber, Money paidAmount, CardType cardType, PaymentProvider paymentProvider,
-        PaymentClientResponse providerResponse, String transactionId) {
+    public static CardPayment create(String orderNumber, Money paidAmount, CardType cardType, PaymentProvider paymentProvider) {
         CardPayment cardPayment = new CardPayment();
 
         cardPayment.orderNumber = orderNumber;
         cardPayment.paidAmount = paidAmount;
-        cardPayment.status = PaymentStatus.REQUESTED;
-
         cardPayment.cardType = cardType;
+        cardPayment.status = PENDING;
         cardPayment.paymentProvider = paymentProvider;
-        cardPayment.providerResponse = providerResponse;
-        cardPayment.transactionId = transactionId;
-
-        cardPayment.registerEvent(new CardPaymentCreatedEvent(cardPayment));
-
         return cardPayment;
     }
 
-    public static CardPayment failCard(String orderNumber, Money paidAmount, CardType cardType, PaymentProvider paymentProvider,
-        PaymentClientResponse providerResponse) {
-        CardPayment cardPayment = new CardPayment();
+    public void request() {
+        if (this.status != PENDING) {
+            throw new IllegalStateException("결제 대기 상태가 아닙니다.");
+        }
+        this.status = REQUESTED;
+        this.registerEvent(new CardPaymentRequestedEvent(this));
+    }
 
-        cardPayment.orderNumber = orderNumber;
-        cardPayment.paidAmount = paidAmount;
-        cardPayment.status = PaymentStatus.FAILED;
-        cardPayment.cardType = cardType;
-        cardPayment.paymentProvider = paymentProvider;
-        cardPayment.providerResponse = providerResponse;
-
-        cardPayment.registerEvent(new CardPaymentCreatedEvent(cardPayment));
-
-        return cardPayment;
+    public void complete(PaymentClientResponse paymentClientResponse) {
+        this.providerResponse = paymentClientResponse;
+        this.transactionId = paymentClientResponse.transactionKey();
+        super.complete();
     }
 }

@@ -22,8 +22,9 @@ public class PaymentV1Controller implements PaymentV1ApiSpec {
     @Override
     @PostMapping("/callback")
     public ApiResponse<?> callback(@RequestBody TransactionCallback transactionCallback) {
+        log.debug("결제 콜백을 수신했습니다. [주문번호: {}] [상태: {}]", transactionCallback.orderId(), transactionCallback.status());
         PaymentSyncCommand command = transactionCallback.toCommand();
-        paymentFacade.syncPayment(command);
+        paymentFacade.sync(command);
         return ApiResponse.success();
     }
 }

@@ -39,15 +39,10 @@ springdoc:
 ---
 spring.config.activate.on-profile: local, test
 
-feign:
-  client:
-    config:
-      default:
-        loggerLevel: full
-
 logging:
   level:
-    com.example: debug
+    root: INFO
+    p6spy: OFF
 ---
 spring.config.activate.on-profile: dev
 

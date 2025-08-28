@@ -2,18 +2,14 @@ package com.loopers.application.payment;
 
 import com.loopers.application.payment.PaymentCommand.PaymentRequestCommand;
 import com.loopers.application.payment.PaymentCommand.PaymentSyncCommand;
-import com.loopers.application.payment.handler.PaymentHandler;
-import com.loopers.application.payment.handler.PaymentHandlers;
-import com.loopers.domain.coupon.IssuedCoupon;
-import com.loopers.domain.coupon.IssuedCouponService;
-import com.loopers.domain.order.Order;
-import com.loopers.domain.order.OrderService;
+import com.loopers.application.payment.adapter.PaymentAdapter;
+import com.loopers.application.payment.adapter.PaymentAdapterRegistry;
 import com.loopers.domain.payment.CardPayment;
 import com.loopers.domain.payment.Payment;
 import com.loopers.domain.payment.PaymentService;
 import com.loopers.domain.payment.PaymentStatus;
+import com.loopers.domain.shared.DomainEventPublisher;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,33 +19,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class PaymentFacade {
 
     private final PaymentService paymentService;
-    private final PaymentHandlers paymentHandlers;
-    private final IssuedCouponService issuedCouponService;
-    private final OrderService orderService;
+    private final DomainEventPublisher domainEventPublisher;
+    private final PaymentAdapterRegistry paymentAdapterRegistry;
 
-    @Transactional
     public void paymentRequest(PaymentRequestCommand command) {
-        PaymentHandler paymentHandler = paymentHandlers.getPaymentHandler(command.paymentMethod());
-        Payment payment = paymentHandler.process(command);
-        paymentService.create(payment);
+        PaymentAdapter paymentAdapter = paymentAdapterRegistry.resolve(command.paymentMethod());
+        paymentAdapter.invoke(command);
     }
 
     @Transactional
-    public void syncPayment(PaymentSyncCommand command) {
+    public void sync(PaymentSyncCommand command) {
         Payment payment = paymentService.findByOrderNumber(command.orderNumber());
-        Order order = orderService.findByOrderNumber(command.orderNumber());
 
         if (command.isSuccess()) {
             payment.complete();
-            order.complete();
         } else {
             payment.fail(command.reason());
-            order.fail();
-            if(order.isCouponUsed()) {
-                IssuedCoupon issuedCoupon = issuedCouponService.findById(order.getCouponId());
-                issuedCoupon.cancel();
-            }
         }
+        domainEventPublisher.publishEvent(payment.events());
     }
 
     public List<String> getSyncTransactionIds() {

@@ -10,7 +10,8 @@ include(
     ":modules:scheduler",
     ":supports:jackson",
     ":supports:logging",
-    ":supports:monitoring",
+    ":supports:async",
+    ":supports:monitoring"
 )
 
 // configurations

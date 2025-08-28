@@ -21,17 +21,17 @@ public class PaymentSyncScheduler {
     private final PaymentFacade paymentFacade;
     private final PaymentSyncConverter paymentSyncConverter;
 
-    @Scheduled(
-        fixedRateString = "${external.payment.providers.simulator.sync-interval}",
-        initialDelayString = "${external.payment.providers.simulator.initial-delay}"
-    )
+//    @Scheduled(
+//        fixedRateString = "${external.payment.providers.simulator.sync-interval}",
+//        initialDelayString = "${external.payment.providers.simulator.initial-delay}"
+//    )
     public void syncPaymentStatus() {
         List<String> transactionKeys = paymentFacade.getSyncTransactionIds();
         for (String transactionKey : transactionKeys) {
             PaymentClientTransactionDetailResponse response = paymentClient.getTransaction(transactionKey);
             if (nonNull(response)) {
                 PaymentSyncCommand paymentSyncCommand = paymentSyncConverter.convert(response);
-                paymentFacade.syncPayment(paymentSyncCommand);
+                paymentFacade.sync(paymentSyncCommand);
             }
         }
     }

@@ -3,7 +3,9 @@ package com.loopers.domain.catalog;
 import static com.loopers.domain.shared.Preconditions.requireNonNull;
 import static com.loopers.domain.shared.Preconditions.requirePositive;
 
-import com.loopers.domain.BaseEntity;
+import com.loopers.domain.catalog.ProductEvent.ProductHeartDecreasedEvent;
+import com.loopers.domain.catalog.ProductEvent.ProductHeartIncreasedEvent;
+import com.loopers.domain.shared.AggregateRoot;
 import com.loopers.domain.shared.Money;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.CascadeType;
@@ -22,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "product")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Product extends BaseEntity {
+public class Product extends AggregateRoot {
 
     private String name;
 
@@ -48,12 +50,20 @@ public class Product extends BaseEntity {
         this.stock = this.stock.subtract(stock);
     }
 
+    public void increaseStock(Stock stock) {
+        requireNonNull(stock, "Product.decreaseStock().stock: 수량은 null일 수 없습니다.");
+        requirePositive(stock.count(), "Product.decreaseStock().stock.value: 수량은 0보다 커야 합니다.");
+        this.stock = this.stock.add(stock);
+    }
+
     public void heart() {
         this.heartCount = this.heartCount.up();
+        this.registerEvent(new ProductHeartIncreasedEvent(this));
     }
 
     public void unHeart() {
         this.heartCount = this.heartCount.down();
+        this.registerEvent(new ProductHeartDecreasedEvent(this));
     }
 
     public boolean isSoldOut() {

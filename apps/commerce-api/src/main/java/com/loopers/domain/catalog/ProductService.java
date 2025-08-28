@@ -23,18 +23,16 @@ public class ProductService {
     private final ProductQueryCachePolicy productQueryCachePolicy;
 
     @Transactional(readOnly = true)
+    public Products findAllCollection(List<Long> productIds) {
+        List<Product> products = productRepository.findAllByIdInWithLock(productIds);
+        Products productCollection = Products.from(products);
+        productCollection.ensureAllExist(productIds);
+        return productCollection;
+    }
+
+    @Transactional(readOnly = true)
     public List<Product> findAll(List<Long> productIds) {
-        List<Product> products = productRepository.findAllByIdIn(productIds);
-        List<Long> foundIds = products.stream()
-            .map(Product::getId)
-            .toList();
-        List<Long> missingIds = productIds.stream()
-            .filter(id -> !foundIds.contains(id))
-            .toList();
-        if (!missingIds.isEmpty()) {
-            throw new CoreException(ErrorType.NOT_FOUND, "ProductService.findAll(): 존재하지 않는 상품: " + missingIds);
-        }
-        return products;
+        return productRepository.findAllByIdIn(productIds);
     }
 
     @Transactional

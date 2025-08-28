@@ -4,6 +4,7 @@ import static com.loopers.domain.shared.Preconditions.requireNonNull;
 
 import com.loopers.domain.BaseEntity;
 import com.loopers.domain.shared.Money;
+import com.loopers.domain.shared.StockReservations.StockReservation;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,14 +45,14 @@ class OrderLine extends BaseEntity {
     @AttributeOverride(name = "count", column = @Column(name = "quantity"))
     private Quantity quantity;
 
-    static OrderLine from(Order order, OrderItem orderItem) {
-        requireNonNull(orderItem, "주문 항목은 null일 수 없습니다.");
+    static OrderLine from(Order order, StockReservation stockReservation) {
+        requireNonNull(stockReservation, "주문 항목은 null일 수 없습니다.");
 
         OrderLine orderLine = new OrderLine();
         orderLine.order = order;
-        orderLine.productId = orderItem.productId();
-        orderLine.price = orderItem.price();
-        orderLine.quantity = orderItem.quantity();
+        orderLine.productId = stockReservation.productId();
+        orderLine.price = stockReservation.price();
+        orderLine.quantity = stockReservation.quantity();
 
         return orderLine;
     }

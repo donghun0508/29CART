@@ -13,7 +13,7 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
 
     @Transactional
-    public Payment create(Payment payment) {
+    public Payment save(Payment payment) {
         return paymentRepository.save(payment);
     }
 
