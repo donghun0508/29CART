@@ -44,7 +44,7 @@ public class Heart extends AggregateRoot {
         Heart heart = new Heart();
         heart.userId = userId;
         heart.target = target;
-        heart.registerEvent(new HeartCreatedEvent(heart)); // 이벤트 등록
+        heart.registerEvent(new HeartCreatedEvent(heart));
         return heart;
     }
 

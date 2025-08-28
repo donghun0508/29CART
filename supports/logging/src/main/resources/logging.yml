@@ -1,1 +1,12 @@
 logging.config: classpath:logback/logback.xml
+
+logging:
+  executor:
+    core-pool-size: 5
+    max-pool-size: 10
+    queue-capacity: 100
+    thread-name-prefix: default-task-executor-
+    keep-alive-seconds: 300
+    allow-core-thread-timeout: true
+    wait-for-tasks-to-complete-on-shutdown: true
+    await-termination-seconds: 60

@@ -1,7 +1,7 @@
 package com.loopers.domain.catalog;
 
 import com.loopers.domain.shared.DomainEvent;
-import com.loopers.logging.notification.NotificationEvent;
+import com.loopers.logging.support.alert.NotificationEvent;
 
 public class ProductEvent {
 
@@ -18,13 +18,18 @@ public class ProductEvent {
         }
     }
 
-    public static class ProductHeartIncreasedEvent extends DomainEvent implements NotificationEvent{
+    public static class ProductHeartIncreasedEvent extends DomainEvent implements NotificationEvent {
         private final Long productId;
         private final Long heartCount;
 
         public ProductHeartIncreasedEvent(Product product) {
             this.productId = product.getId();
             this.heartCount = product.getHeartCount();
+        }
+
+        @Override
+        public boolean shouldNotify() {
+            return false;
         }
 
         @Override
@@ -40,6 +45,11 @@ public class ProductEvent {
         public ProductHeartDecreasedEvent(Product product) {
             this.productId = product.getId();
             this.heartCount = product.getHeartCount();
+        }
+
+        @Override
+        public boolean shouldNotify() {
+            return false;
         }
 
         @Override

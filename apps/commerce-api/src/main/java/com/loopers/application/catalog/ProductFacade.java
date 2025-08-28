@@ -16,6 +16,7 @@ import com.loopers.domain.order.OrderNumber;
 import com.loopers.domain.order.OrderService;
 import com.loopers.domain.shared.DomainEventPublisher;
 import com.loopers.domain.user.UserService;
+import com.loopers.logging.support.analytics.EventTrace;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,11 +35,13 @@ public class ProductFacade {
     private final HeartService heartService;
     private final DomainEventPublisher domainEventPublisher;
 
+    @EventTrace
     public Slice<ProductSliceResult> getProductList(ListCondition condition) {
         ProductSliceRead productSliceRead = productService.getProductSliceRead(condition);
         return ProductSliceResult.from(productSliceRead);
     }
 
+    @EventTrace
     public ProductDetailResult getProductDetail(DetailCondition condition) {
         ProductRead productRead = productService.getProductRead(condition.productId());
 

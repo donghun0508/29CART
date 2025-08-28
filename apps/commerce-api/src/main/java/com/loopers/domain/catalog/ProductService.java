@@ -3,7 +3,6 @@ package com.loopers.domain.catalog;
 import static com.loopers.domain.shared.Preconditions.isHit;
 
 import com.loopers.domain.catalog.ProductCondition.ListCondition;
-import com.loopers.logging.execution.ExecutionTime;
 import com.loopers.support.error.CoreException;
 import com.loopers.support.error.ErrorType;
 import java.util.List;
@@ -67,7 +66,6 @@ public class ProductService {
                 "ProductService.findByIdWithOptimisticLock(): 상품을 찾을 수 없습니다. 상품 ID: " + productId));
     }
 
-    @ExecutionTime
     @Transactional(readOnly = true)
     public ProductSliceRead getProductSliceRead(ListCondition condition) {
         ProductSliceRead cache = productCacheRepository.findSliceByCondition(condition);

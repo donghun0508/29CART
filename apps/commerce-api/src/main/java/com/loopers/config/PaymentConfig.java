@@ -125,13 +125,13 @@ public class PaymentConfig {
                 }
 
                 @Bean
-                public Retry paymentRetry() {
+                public Retry paymentRetry(PaymentRequestRetryPolicy paymentRequestRetryPolicy) {
                     var operationConfig = paymentProperties.getProvider(SIMULATOR_PROVIDER_NAME)
                         .getOperationConfig(OPERATION_PAYMENT_REQUEST);
                     var retryConfig = operationConfig.getResilience4j().getRetry();
 
                     return configFactory.createRetry(RETRY_PAYMENT, retryConfig,
-                        Boolean.TRUE.equals(retryConfig.getManual()) ? new PaymentRequestRetryPolicy() : null);
+                        Boolean.TRUE.equals(retryConfig.getManual()) ? paymentRequestRetryPolicy : null);
                 }
             }
         }

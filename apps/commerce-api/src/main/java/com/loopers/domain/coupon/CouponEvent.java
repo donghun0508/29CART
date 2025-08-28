@@ -1,7 +1,7 @@
 package com.loopers.domain.coupon;
 
 import com.loopers.domain.shared.DomainEvent;
-import com.loopers.logging.notification.NotificationEvent;
+import com.loopers.logging.support.alert.NotificationEvent;
 
 public class CouponEvent {
 

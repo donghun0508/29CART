@@ -9,6 +9,7 @@ import com.loopers.domain.shared.DomainEventPublisher;
 import com.loopers.domain.user.AccountId;
 import com.loopers.domain.user.User;
 import com.loopers.domain.user.UserService;
+import com.loopers.logging.support.analytics.EventTrace;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ public class HeartFacade {
     private final HeartProcessor heartProcessor;
     private final DomainEventPublisher domainEventPublisher;
 
+    @EventTrace
     @Transactional
     public void heart(LikeCommand criteria) {
         heartProcessor.addHeart(criteria.target());
@@ -36,6 +38,7 @@ public class HeartFacade {
         domainEventPublisher.publishEvent(heart.events());
     }
 
+    @EventTrace
     @Transactional
     public void unHeart(UnlikeCommand criteria) {
         heartProcessor.unHeart(criteria.target());

@@ -1,4 +1,4 @@
-package com.loopers.logging.execution;
+package com.loopers.logging.support.metrics;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -10,20 +10,20 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class ExecutionTimeAspect {
-    
-    @Around("@annotation(com.loopers.logging.execution.ExecutionTime)")
+
+    @Around("@annotation(com.loopers.logging.support.metrics.ExecutionTime)")
     public Object measureExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
-        
+
         try {
             return joinPoint.proceed();
         } finally {
             long endTime = System.currentTimeMillis();
             long executionTime = endTime - startTime;
-            
+
             String className = joinPoint.getTarget().getClass().getSimpleName();
             String methodName = joinPoint.getSignature().getName();
-            
+
             log.info("[ExecutionTime] {}.{} executed in {} ms", className, methodName, executionTime);
         }
     }

@@ -2,7 +2,7 @@ package com.loopers.domain.payment;
 
 import com.loopers.domain.shared.DomainEvent;
 import com.loopers.domain.shared.Money;
-import com.loopers.logging.notification.NotificationEvent;
+import com.loopers.logging.support.alert.NotificationEvent;
 import lombok.Getter;
 
 public class PaymentEvent {
