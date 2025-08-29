@@ -35,12 +35,12 @@ class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public Optional<Order> findByIdempotencyKeyWithLock(IdempotencyKey idempotencyKey) {
-        return orderJpaRepository.findByIdempotencyKeyWithLock(idempotencyKey);
+    public Optional<Order> findByIdempotencyKey(IdempotencyKey idempotencyKey) {
+        return orderJpaRepository.findByIdempotencyKey(idempotencyKey);
     }
 
     @Override
-    public Optional<Order> findByIdempotencyKey(IdempotencyKey idempotencyKey) {
-        return orderJpaRepository.findByIdempotencyKey(idempotencyKey);
+    public boolean existsByIdempotencyKey(IdempotencyKey idempotencyKey) {
+        return orderJpaRepository.existsByIdempotencyKey(idempotencyKey);
     }
 }

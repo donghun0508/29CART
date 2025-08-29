@@ -1,9 +1,9 @@
 package com.loopers.domain.order;
 
 import static com.loopers.domain.shared.Preconditions.requireNonEmpty;
-import static java.util.stream.Collectors.toList;
 
 import com.loopers.domain.shared.Money;
+import com.loopers.domain.shared.StockReservations.StockReservation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.OneToMany;
@@ -14,10 +14,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
-@Getter(AccessLevel.PACKAGE)
+@Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-class OrderLines {
+public class OrderLines {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderLine> lines;
@@ -26,9 +26,9 @@ class OrderLines {
         this.lines = new ArrayList<>(lines);
     }
 
-    static OrderLines of(Order order, List<OrderItem> orderItems) {
-        requireNonEmpty(orderItems, "주문 항목은 비어있을 수 없습니다.");
-        return new OrderLines(orderItems.stream().map(item -> OrderLine.from(order, item)).toList());
+    static OrderLines of(Order order, List<StockReservation> stockReservations) {
+        requireNonEmpty(stockReservations, "주문 항목은 비어있을 수 없습니다.");
+        return new OrderLines(stockReservations.stream().map(item -> OrderLine.from(order, item)).toList());
     }
 
     Money calculateTotalAmount() {

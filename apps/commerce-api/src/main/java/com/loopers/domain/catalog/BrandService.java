@@ -1,6 +1,5 @@
 package com.loopers.domain.catalog;
 
-import com.loopers.logging.execution.ExecutionTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ public class BrandService {
             .orElseThrow(() -> new IllegalArgumentException("브랜드를 찾을 수 없습니다. ID: " + brandId));
     }
 
-    @ExecutionTime
     @Transactional(readOnly = true)
     public List<Brand> findAllById(List<Long> brandIds) {
         return brandRepository.findAllById(brandIds);

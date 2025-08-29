@@ -12,8 +12,7 @@ public interface OrderRepository {
 
     Optional<Order> findByOrderNumberWithLock(OrderNumber orderNumber);
 
-    Optional<Order> findByIdempotencyKeyWithLock(IdempotencyKey idempotencyKey);
-
     Optional<Order> findByIdempotencyKey(IdempotencyKey idempotencyKey);
 
+    boolean existsByIdempotencyKey(IdempotencyKey idempotencyKey);
 }

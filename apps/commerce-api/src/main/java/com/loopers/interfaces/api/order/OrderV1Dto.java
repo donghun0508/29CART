@@ -2,9 +2,9 @@ package com.loopers.interfaces.api.order;
 
 import static java.util.Objects.isNull;
 
-import com.loopers.application.payment.data.CardMethod;
-import com.loopers.application.payment.data.PaymentMethod;
-import com.loopers.application.payment.data.PointMethod;
+import com.loopers.domain.payment.CardMethod;
+import com.loopers.domain.payment.PaymentMethod;
+import com.loopers.domain.payment.PointMethod;
 import com.loopers.domain.payment.CardNumber;
 import com.loopers.domain.payment.CardType;
 import java.util.List;

@@ -21,7 +21,7 @@ public record Stock(Long count) {
 
     public Stock subtract(Stock other) {
         if (this.count < other.count) {
-            throw new IllegalArgumentException("Stock.subtract().other: 계산 결과가 음수가 될 수 없습니다.");
+            throw new IllegalStateException("Stock.subtract().other: 계산 결과가 음수가 될 수 없습니다.");
         }
         return new Stock(this.count - other.count);
     }

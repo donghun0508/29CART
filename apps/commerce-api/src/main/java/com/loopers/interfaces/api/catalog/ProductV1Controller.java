@@ -45,7 +45,7 @@ public class ProductV1Controller implements ProductV1ApiSpec {
         @PathVariable Long productId,
         @RequestHeader(value = USER_ID, required = false) String userId
     ) {
-        ProductDetailResult productDetail = productFacade.getProductDetail(new DetailCondition(productId, AccountId.of(userId)));
+        ProductDetailResult productDetail = productFacade.getProductDetail(new DetailCondition(productId, userId));
         return ApiResponse.success(ProductV1Dto.GetDetailResponse.from(productDetail));
     }
 }

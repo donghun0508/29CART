@@ -3,9 +3,9 @@ package com.loopers.application.order;
 import static com.loopers.domain.shared.Preconditions.requireNonBlank;
 import static com.loopers.domain.shared.Preconditions.requireNonEmpty;
 
-import com.loopers.application.payment.data.PaymentMethod;
 import com.loopers.domain.catalog.Stock;
 import com.loopers.domain.order.IdempotencyKey;
+import com.loopers.domain.payment.PaymentMethod;
 import com.loopers.domain.user.AccountId;
 import java.util.List;
 import java.util.Map;
@@ -41,12 +41,12 @@ public class OrderCommand {
                 paymentMethod);
         }
 
-        public Optional<Long> findCoupon() {
-            return Optional.ofNullable(this.couponId);
+        public List<Long> productIds() {
+            return purchaseProducts.keySet().stream().toList();
         }
 
-        public List<Long> purchaseProductIds() {
-            return purchaseProducts.keySet().stream().toList();
+        public boolean applyCoupon() {
+            return couponId != null;
         }
     }
 }
