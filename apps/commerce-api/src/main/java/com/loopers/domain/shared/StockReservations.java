@@ -9,8 +9,13 @@ public class StockReservations {
 
     private final List<StockReservation> stockReservations;
 
-    public StockReservations(List<StockReservation> stockReservations) {
+    private StockReservations(List<StockReservation> stockReservations) {
         this.stockReservations = stockReservations;
+    }
+
+    public static StockReservations from(List<StockReservation> stockReservations) {
+        requireNonNull(stockReservations, "StockReservations.of().stockReservations: 재고 예약 목록은 null일 수 없습니다.");
+        return new StockReservations(stockReservations);
     }
 
     public Money totalPrice() {

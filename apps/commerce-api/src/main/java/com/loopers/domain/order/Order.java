@@ -22,7 +22,6 @@ import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -82,31 +81,36 @@ public class Order extends AggregateRoot {
         order.registerEvent(new OrderCreatedEvent(order));
 
         if(order.orderCoupon.hasCoupon()) {
-            order.registerEvent(new OrderAppliedCouponEvent(order));             // 쿠폰 적용됨 이벤트 등록
+            order.registerEvent(new OrderAppliedCouponEvent(order));
         }
         return order;
     }
 
-    public void processing() {
-        if (this.status != OrderStatus.PENDING) {
-            throw new IllegalStateException("주문 상태가 결제 진행 가능한 상태가 아닙니다.");
-        }
-
-        this.status = OrderStatus.PROCESSING;
-    }
-
     public void complete() {
-        assertPayable();
+        validateCompletable();
         this.status = OrderStatus.COMPLETED;
         this.registerEvent(new OrderCompletedEvent(this));
     }
 
     public void fail() {
-        if (this.status == OrderStatus.FAILED) {
-            throw new IllegalStateException("이미 주문이 실패 상태입니다.");
-        }
+        validateFailable();
         this.status = OrderStatus.FAILED;
         this.registerEvent(new OrderFailedEvent(this));
+    }
+
+    public boolean hasCoupon() {
+        return this.orderCoupon.hasCoupon();
+    }
+
+    public Money paidAmount() {
+        if (this.orderCoupon.hasCoupon()) {
+            return this.orderCoupon.paidPrice();
+        }
+        return this.totalAmount;
+    }
+
+    public Long issuedCouponId() {
+        return this.orderCoupon.issuedCouponId();
     }
 
     public List<Long> purchaseProductIds() {
@@ -124,39 +128,23 @@ public class Order extends AggregateRoot {
             );
     }
 
-    public boolean isCouponUsed() {
-        return this.orderCoupon.hasCoupon();
-    }
-
-    public Optional<OrderCoupon> hasCoupon() {
-        if (this.orderCoupon.hasCoupon()) {
-            return Optional.of(this.orderCoupon);
-        }
-        return Optional.empty();
-    }
-
-    public Long issuedCouponId() {
-        return this.orderCoupon.issuedCouponId();
-    }
-
-    private void assertPayable() {
+    private void validateCompletable() {
         if (!isPending()) {
-            throw new IllegalStateException("이미 결제가 완료되었거나 취소된 주문입니다. 주문번호: " + this.orderNumber.number());
+            throw new IllegalStateException("Order.validateCompletable(): 이미 주문이 완료되었거나 취소된 주문입니다. 주문번호: " + this.orderNumber.number());
         }
     }
 
-    public boolean isPending() {
+    private void validateFailable() {
+        if(isFailed()) {
+            throw new IllegalStateException("Order.validateFailable(): 이미 주문이 실패 상태입니다. 주문번호: " + this.orderNumber.number());
+        }
+    }
+
+    private boolean isPending() {
         return this.status == OrderStatus.PENDING;
     }
 
-    public boolean isCompleted() {
-        return this.status == OrderStatus.COMPLETED;
-    }
-
-    public Money paidAmount() {
-        if (this.orderCoupon.hasCoupon()) {
-            return this.orderCoupon.paidPrice();
-        }
-        return this.totalAmount;
+    private boolean isFailed() {
+        return this.status == OrderStatus.FAILED;
     }
 }

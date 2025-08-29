@@ -2,7 +2,6 @@ package com.loopers.application.heart.processor;
 
 import static com.loopers.domain.heart.TargetType.PRODUCT;
 
-import com.loopers.domain.catalog.Product;
 import com.loopers.domain.catalog.ProductService;
 import com.loopers.domain.heart.TargetType;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-class ProductHeartProcess implements HeartProcess {
+class ProductTargetProcess implements TargetProcess {
 
     private final ProductService productService;
 
@@ -22,14 +21,7 @@ class ProductHeartProcess implements HeartProcess {
     }
 
     @Override
-    public void addHeart(Long targetId) {
-        Product product = productService.findByIdWithLock(targetId);
-        product.heart();
-    }
-
-    @Override
-    public void unHeart(Long targetId) {
-        Product product = productService.findByIdWithLock(targetId);
-        product.unHeart();
+    public void acquireTargetLock(Long targetId) {
+        productService.findByIdWithLock(targetId);
     }
 }

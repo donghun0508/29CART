@@ -1,11 +1,11 @@
 package com.loopers.application.order;
 
+import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.loopers.application.order.OrderCommand.OrderRequestCommand;
-import com.loopers.application.order.OrderResult.OrderPaymentResult;
 import com.loopers.domain.payment.PointMethod;
 import com.loopers.config.annotations.IntegrationTest;
 import com.loopers.domain.catalog.Product;
@@ -15,7 +15,6 @@ import com.loopers.domain.coupon.IssuedCouponService;
 import com.loopers.domain.order.IdempotencyKey;
 import com.loopers.domain.order.Order;
 import com.loopers.domain.order.OrderService;
-import com.loopers.domain.payment.Payment;
 import com.loopers.domain.payment.PaymentService;
 import com.loopers.domain.shared.Money;
 import com.loopers.domain.user.AccountId;
@@ -36,7 +35,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +43,7 @@ import org.springframework.test.context.jdbc.Sql;
 @Slf4j
 @IntegrationTest
 @Sql(scripts = "/data/test-setup.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-class OrderFacadeTest {
+class OrderFacadeIntegrationTest {
 
     @Autowired
     private OrderFacade orderFacade;
@@ -84,7 +82,7 @@ class OrderFacadeTest {
             .satisfies(exception -> {
                 assertThat(exception.getErrorType()).isEqualTo(ErrorType.NOT_FOUND);
             })
-            .withMessageContaining("ProductService.findAll()");
+            .withMessageContaining("Products.ensureAllExist()");
     }
 
     @DisplayName("재고가 부족할 경우, 예외가 발생한다.")
@@ -95,7 +93,7 @@ class OrderFacadeTest {
 
         assertThatThrownBy(() -> orderFacade.place(criteria))
             .isInstanceOf(IllegalStateException.class)
-            .hasMessageContaining("ProductManager.decreaseStock()");
+            .hasMessageContaining("Stock.subtract().other");
     }
 
     @DisplayName("존재하지 않은 쿠폰 사용 시, 예외가 발생한다.")
@@ -123,7 +121,6 @@ class OrderFacadeTest {
             .hasMessageContaining("Issuance.validate().targetId");
     }
 
-    @Disabled("우선 넘어가고 고쳐야함..")
     @DisplayName("동일한 쿠폰으로 여러 기기에서 동시에 주문해도, 쿠폰은 단 한번만 사용되어야 한다.")
     @Test
     void couponShouldBeUsedOnlyOnceEvenWhenOrderedSimultaneously() throws InterruptedException {
@@ -173,7 +170,6 @@ class OrderFacadeTest {
         assertThat(issuedCoupon.getTargetId()).isEqualTo(buyer.getId());
     }
 
-    @Disabled("우선 넘어가고 고쳐야함..")
     @DisplayName("동일한 유저가 서로 다른 주문을 동시에 수행해도, 포인트가 정상적으로 차감되어야 한다.")
     @Test
     void userPointShouldBeDeductedCorrectlyWhenMultipleOrdersArePlacedSimultaneously() throws InterruptedException {
@@ -273,12 +269,12 @@ class OrderFacadeTest {
                 .isEqualTo(expectedFinalStock);
         });
 
+        sleep(300);
         User finalUser = userService.findByAccountId(AccountId.of(accountId));
         Money expectedFinalPoint = totalAmount.subtract(productTotalAmount);
         assertThat(finalUser.getTotalPoint()).isEqualTo(expectedFinalPoint);
     }
 
-    @Disabled("우선 넘어가고 고쳐야함..")
     @DisplayName("동일한 상품에 대해 여러 주문이 동시에 요청되어도, 재고가 정상적으로 차감되어야 한다.")
     @Test
     void stockShouldBeDeductedCorrectlyWhenMultipleOrdersForSameProductArePlacedSimultaneously() throws InterruptedException {

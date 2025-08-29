@@ -9,6 +9,7 @@ import com.loopers.domain.payment.PaymentMethod;
 import com.loopers.domain.user.AccountId;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class OrderCommand {
@@ -42,6 +43,10 @@ public class OrderCommand {
 
         public List<Long> productIds() {
             return purchaseProducts.keySet().stream().toList();
+        }
+
+        public boolean applyCoupon() {
+            return couponId != null;
         }
     }
 }

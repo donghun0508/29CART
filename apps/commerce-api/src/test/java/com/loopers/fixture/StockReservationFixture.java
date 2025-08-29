@@ -10,7 +10,7 @@ import org.instancio.Instancio;
 import org.instancio.InstancioApi;
 import org.instancio.Select;
 
-public class OrderItemFixture {
+public class StockReservationFixture {
 
     public static Builder builder() {
         return new Builder();
@@ -18,7 +18,7 @@ public class OrderItemFixture {
 
     public static class Builder {
 
-        private final InstancioApi<List<StockReservation>> api;  // 타입 변경
+        private final InstancioApi<List<StockReservation>> api;
         static final Integer MIN_TEST_SIZE = 1;
         static final Integer MAX_TEST_SIZE = 10;
 

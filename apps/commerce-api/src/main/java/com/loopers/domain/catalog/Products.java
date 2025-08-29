@@ -28,7 +28,7 @@ public class Products {
             .filter(id -> !foundIds.contains(id))
             .toList();
         if (!missingIds.isEmpty()) {
-            throw new CoreException(ErrorType.NOT_FOUND, "존재하지 않는 상품: " + missingIds);
+            throw new CoreException(ErrorType.NOT_FOUND, "Products.ensureAllExist() 존재하지 않는 상품: " + missingIds);
         }
     }
 
@@ -39,7 +39,7 @@ public class Products {
             product.decreaseStock(stock);
             stockReservations.add(new StockReservation(product.getId(), product.getUnitPrice().value(), stock.count()));
         }
-        return new StockReservations(stockReservations);
+        return StockReservations.from(stockReservations);
     }
 
     public void restore(Map<Long, Long> stockMap) {

@@ -38,9 +38,11 @@ public class OrderFacade {
         StockReservations reservations = products.reserve(command.purchaseProducts());
 
         // 쿠폰 금액 계산
-        OrderCoupon orderCoupon = issuedCouponService.findByIdOptional(command.couponId())
-            .map(coupon -> coupon.calculate(buyer.getId(), reservations.totalPrice()))
-            .orElse(OrderCoupon.empty(reservations.totalPrice()));
+        OrderCoupon orderCoupon = OrderCoupon.empty(reservations.totalPrice());
+        if(command.applyCoupon()) {
+            IssuedCoupon issuedCoupon = issuedCouponService.findByIdWithLock(command.couponId());
+            orderCoupon = issuedCoupon.calculate(buyer.getId(), reservations.totalPrice());
+        }
 
         // 주문 생성
         Order order = Order.create(buyer.getId(), command.idempotencyKey(), orderCoupon, reservations.getStockReservations(), command.paymentMethod());
@@ -61,9 +63,6 @@ public class OrderFacade {
     public void fail(OrderNumber orderNumber) {
         Order order = orderService.findByOrderNumber(orderNumber);
         order.fail();
-        order.hasCoupon()
-            .map(orderCoupon -> issuedCouponService.findById(orderCoupon.issuedCouponId()))
-            .ifPresent(IssuedCoupon::cancel);
         domainEventPublisher.publishEvent(order.events());
     }
 }

@@ -8,11 +8,13 @@ import com.loopers.domain.heart.TargetType;
 import com.loopers.domain.order.OrderNumber;
 import com.loopers.domain.payment.PaymentEvent.PaymentFailedEvent;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 class ProductEventListener {

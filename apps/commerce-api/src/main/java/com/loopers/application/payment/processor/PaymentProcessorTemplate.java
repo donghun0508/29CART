@@ -2,15 +2,11 @@ package com.loopers.application.payment.processor;
 
 import com.loopers.application.payment.processor.PaymentProcessor.PaymentRequest;
 import com.loopers.application.payment.processor.support.PaymentExceptionTranslator;
-import com.loopers.domain.order.Order;
 import com.loopers.domain.order.OrderNumber;
 import com.loopers.domain.order.OrderService;
 import com.loopers.domain.payment.Payment;
 import com.loopers.domain.payment.PaymentService;
-import com.loopers.domain.shared.AggregateRoot;
-import com.loopers.domain.shared.DomainEvent;
 import com.loopers.domain.shared.DomainEventPublisher;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 

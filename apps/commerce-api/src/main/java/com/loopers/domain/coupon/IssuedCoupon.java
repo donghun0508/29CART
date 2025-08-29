@@ -49,12 +49,6 @@ public class IssuedCoupon extends AggregateRoot {
     })
     private CouponState couponState;
 
-    public Money use(Long targetId, Money orderAmount) {
-        this.issuance.validate(targetId);
-        this.couponState = this.couponState.used();
-        return this.discountType.calculate(orderAmount, discountValue);
-    }
-
     public void use() {
         this.couponState = this.couponState.used();
         this.registerEvent(new CouponUsedEvent(this));
@@ -67,7 +61,7 @@ public class IssuedCoupon extends AggregateRoot {
 
     public OrderCoupon calculate(Long targetId, Money orderAmount) {
         this.issuance.validate(targetId);
-        this.couponState.validate();
+        this.couponState.checkAvailable();
         return new OrderCoupon(this.getId(), this.discountType.calculate(orderAmount, discountValue));
     }
 

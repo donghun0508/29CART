@@ -17,11 +17,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter(AccessLevel.PACKAGE)
+@Getter
 @Entity
 @Table(name = "order_line")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-class OrderLine extends BaseEntity {
+public class OrderLine extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(

@@ -1,5 +1,6 @@
 package com.loopers.application.heart;
 
+import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.loopers.application.heart.HeartCommand.LikeCommand;
@@ -41,7 +42,7 @@ import org.springframework.test.context.TestPropertySource;
     "logging.level.org.hibernate.engine.jdbc.spi.SqlExceptionHelper=OFF",
     "logging.level.com.mysql.cj.jdbc.exceptions=OFF"
 })
-class HeartCountFacadeTest {
+class HeartCountFacadeIntegrationTest {
 
     @Autowired
     private HeartFacade heartFacade;
@@ -116,6 +117,8 @@ class HeartCountFacadeTest {
 
         log.info("총 요청 수: {}, 성공: {}, 실패: {}", totalRequests, successCount.get(), failCount.get());
 
+        sleep(300);
+
         long actualLikeCount = heartRepository.count();
         assertThat(actualLikeCount).isEqualTo(userCount);
 
@@ -135,8 +138,7 @@ class HeartCountFacadeTest {
         }
 
         Brand brand = brandRepository.save(BrandFixture.persistence().build());
-        Product product = productRepository.save(ProductFixture.persistence().brand(brand).like(
-            HeartCount.zero()).build());
+        Product product = productRepository.save(ProductFixture.persistence().brand(brand).like(HeartCount.zero()).build());
         Target target = Target.of(product.getId(), TargetType.PRODUCT);
 
         for (User user : users) {
@@ -144,8 +146,11 @@ class HeartCountFacadeTest {
             heartFacade.heart(likeCommand);
         }
 
+        sleep(300);
+
         assertThat(heartRepository.count()).isEqualTo(userCount);
-        assertThat(productRepository.findById(product.getId()).orElseThrow().getHeartCount()).isEqualTo(userCount);
+        Product findProduct = productRepository.findById(product.getId()).orElseThrow();
+        assertThat(findProduct.getHeartCount()).isEqualTo(userCount);
 
         int requestsPerUser = 5;
         int totalRequests = userCount * requestsPerUser;
@@ -179,6 +184,8 @@ class HeartCountFacadeTest {
         assertThat(completed).isTrue();
 
         log.info("총 요청 수: {}, 성공: {}, 실패: {}", totalRequests, successCount.get(), failCount.get());
+
+        sleep(300);
 
         long actualLikeCount = heartRepository.count();
         assertThat(actualLikeCount).isZero();
