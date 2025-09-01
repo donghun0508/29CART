@@ -1,5 +1,7 @@
 package com.loopers.domain.payment;
 
+import com.loopers.domain.payment.PaymentEvent.PaymentCompletedEvent;
+import com.loopers.domain.payment.PaymentEvent.PaymentFailedEvent;
 import com.loopers.domain.shared.AggregateRoot;
 import com.loopers.domain.shared.Money;
 import jakarta.persistence.AttributeOverride;
@@ -15,6 +17,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.DomainEvents;
 
 @Getter
 @Entity
@@ -50,6 +53,7 @@ public abstract class Payment extends AggregateRoot {
             throw new IllegalStateException("결제 진행 중인 상태가 아닙니다.");
         }
         this.status = PaymentStatus.COMPLETED;
+        this.registerEvent(new PaymentCompletedEvent(this)); // 결제 완료 이벤트 등록됨
     }
 
     public void fail(String reason) {
@@ -58,6 +62,7 @@ public abstract class Payment extends AggregateRoot {
         }
         this.status = PaymentStatus.FAILED;
         this.failureReason = reason;
+        this.registerEvent(new PaymentFailedEvent(this));
     }
 
     public boolean isFailed() {

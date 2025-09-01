@@ -2,6 +2,7 @@ package com.loopers.domain.catalog;
 
 import com.loopers.domain.user.AccountId;
 import org.springframework.data.domain.Pageable;
+import org.springframework.util.StringUtils;
 
 public class ProductCondition {
 
@@ -23,7 +24,7 @@ public class ProductCondition {
     public record DetailCondition(Long productId, AccountId accountId) {
 
         public DetailCondition(Long productId, String accountId) {
-            this(productId, accountId != null && !accountId.isBlank() ? AccountId.of(accountId) : null);
+            this(productId, StringUtils.hasText(accountId) ? AccountId.of(accountId) : null);
         }
     }
 }

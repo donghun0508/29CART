@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.loopers.support.error.CoreException;
 import com.loopers.support.error.ErrorType;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
@@ -82,6 +84,13 @@ public class ApiControllerAdvice {
 
         String message = errors.isEmpty() ? "입력값 검증에 실패했습니다."
             : String.format("입력값 검증에 실패했습니다. 오류 필드: %s", String.join(", ", errors.keySet()));
+        return failureResponse(ErrorType.BAD_REQUEST, message);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiResponse<?>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        log.warn("Data Integrity Violation: {}", ex.getMessage());
+        String message = "데이터 무결성 제약 조건 위반으로 인해 요청을 처리할 수 없습니다.";
         return failureResponse(ErrorType.BAD_REQUEST, message);
     }
 

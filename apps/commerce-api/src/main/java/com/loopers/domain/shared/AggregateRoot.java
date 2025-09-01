@@ -12,14 +12,14 @@ public abstract class AggregateRoot extends BaseEntity {
     @Transient
     private final List<DomainEvent> domainEvents = new ArrayList<>();
 
-    protected void registerEvent(DomainEvent event) {
-        this.domainEvents.add(event);
+    protected void registerEvent(DomainEvent domainEvent) {
+        this.domainEvents.add(domainEvent);
     }
 
-    public List<DomainEvent> pullDomainEvents() {
-        List<DomainEvent> events = new ArrayList<>(this.domainEvents);
+    public List<DomainEvent> events() {
+        List<DomainEvent> domainEvents = new ArrayList<>(this.domainEvents);
         this.domainEvents.clear();
-        return events;
+        return domainEvents;
     }
 
     public boolean hasDomainEvents() {

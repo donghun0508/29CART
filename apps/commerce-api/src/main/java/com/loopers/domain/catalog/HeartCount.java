@@ -11,7 +11,7 @@ public record HeartCount(Long value) {
 
     public HeartCount down() {
         if (this.value <= 0) {
-            throw new IllegalStateException("좋아요 수가 0 이하입니다. 좋아요를 취소할 수 없습니다.");
+            throw new IllegalStateException("HeartCount.down().value: 좋아요 수가 0 이하입니다. 좋아요를 취소할 수 없습니다.");
         }
         return new HeartCount(this.value - 1);
     }

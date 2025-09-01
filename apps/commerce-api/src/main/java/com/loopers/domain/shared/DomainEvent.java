@@ -1,10 +1,17 @@
 package com.loopers.domain.shared;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
-public interface DomainEvent {
+public abstract class DomainEvent {
 
-    default ZonedDateTime occurredOn() {
-        return ZonedDateTime.now();
+    private final String eventId;
+    private final ZonedDateTime occurredOn;
+    private final String name;
+
+    protected DomainEvent() {
+        this.eventId = UUID.randomUUID().toString();
+        this.occurredOn = ZonedDateTime.now();
+        this.name = getClass().getSimpleName();
     }
 }

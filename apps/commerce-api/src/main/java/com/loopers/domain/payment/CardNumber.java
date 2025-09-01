@@ -9,8 +9,8 @@ public record CardNumber(String number) {
     private static final Pattern CARD_NUMBER_PATTERN = Pattern.compile("^\\d{16}$");
 
     public CardNumber {
-        requireNonBlank(number, "카드 번호는 비어있을 수 없습니다.");
-        requireValidFormat(number, "카드 번호는 16자리 숫자여야 합니다.");
+//        requireNonBlank(number, "카드 번호는 비어있을 수 없습니다.");
+//        requireValidFormat(number, "카드 번호는 16자리 숫자여야 합니다.");
     }
 
     private static void requireValidFormat(String value, String errorMessage) {

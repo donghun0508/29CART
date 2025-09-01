@@ -31,7 +31,7 @@ public class PaymentSyncScheduler {
             PaymentClientTransactionDetailResponse response = paymentClient.getTransaction(transactionKey);
             if (nonNull(response)) {
                 PaymentSyncCommand paymentSyncCommand = paymentSyncConverter.convert(response);
-                paymentFacade.syncPayment(paymentSyncCommand);
+                paymentFacade.sync(paymentSyncCommand);
             }
         }
     }

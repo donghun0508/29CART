@@ -19,11 +19,9 @@ public interface OrderJpaRepository extends JpaRepository<Order, Long> {
     @Query("SELECT o FROM Order o WHERE o.orderNumber = :orderNumber")
     Optional<Order> findByOrderNumberWithLock(@Param("orderNumber") OrderNumber orderNumber);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT o FROM Order o WHERE o.idempotencyKey = :idempotencyKey")
-    Optional<Order> findByIdempotencyKeyWithLock(@Param("idempotencyKey") IdempotencyKey idempotencyKey);
+    Optional<Order> findByIdempotencyKey(@Param("idempotencyKey") IdempotencyKey idempotencyKey);
 
     List<Order> id(Long id);
 
-    Optional<Order> findByIdempotencyKey(IdempotencyKey idempotencyKey);
+    boolean existsByIdempotencyKey(IdempotencyKey idempotencyKey);
 }

@@ -4,9 +4,12 @@ import static com.loopers.config.PaymentConfig.SimulatorProviderConfig.Operation
 import static com.loopers.config.PaymentConfig.SimulatorProviderConfig.OperationConfig.OperationPaymentRequestConfig.Constants.OPERATION_PAYMENT_REQUEST;
 import static com.loopers.config.PaymentConfig.SimulatorProviderConfig.OperationConfig.OperationPaymentRequestConfig.Constants.RETRY_PAYMENT;
 
-import com.loopers.infrastructure.client.PaymentRequestRetryPolicy;
+import com.loopers.infrastructure.client.payment.PaymentRequestRetryPolicy;
+import com.loopers.infrastructure.client.payment.PaymentGatewaySimulatorClientErrorDecoder;
 import com.loopers.resilience.Resilience4jConfigFactory;
+import feign.Logger;
 import feign.RequestInterceptor;
+import feign.codec.ErrorDecoder;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.retry.Retry;
 import java.time.Duration;
@@ -67,6 +70,11 @@ public class PaymentConfig {
             return template -> template.header("X-USER-ID", properties.getCompany());
         }
 
+        @Bean
+        public ErrorDecoder simulatorProviderErrorDecoder() {
+            return new PaymentGatewaySimulatorClientErrorDecoder();
+        }
+
         @Bean("paymentRequestTaskExecutor")
         public ThreadPoolTaskExecutor paymentRequestTaskExecutor(PaymentProperties paymentProperties) {
             var providerConfig = paymentProperties.getProvider(SIMULATOR_PROVIDER_NAME);
@@ -117,13 +125,13 @@ public class PaymentConfig {
                 }
 
                 @Bean
-                public Retry paymentRetry() {
+                public Retry paymentRetry(PaymentRequestRetryPolicy paymentRequestRetryPolicy) {
                     var operationConfig = paymentProperties.getProvider(SIMULATOR_PROVIDER_NAME)
                         .getOperationConfig(OPERATION_PAYMENT_REQUEST);
                     var retryConfig = operationConfig.getResilience4j().getRetry();
 
                     return configFactory.createRetry(RETRY_PAYMENT, retryConfig,
-                        Boolean.TRUE.equals(retryConfig.getManual()) ? new PaymentRequestRetryPolicy() : null);
+                        Boolean.TRUE.equals(retryConfig.getManual()) ? paymentRequestRetryPolicy : null);
                 }
             }
         }

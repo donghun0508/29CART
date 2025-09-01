@@ -23,6 +23,12 @@ public record CouponState(@Enumerated(EnumType.STRING) CouponStatus status, Loca
         return new CouponState(CouponStatus.AVAILABLE, null);
     }
 
+    public void checkAvailable() {
+        if(this.status != CouponStatus.AVAILABLE) {
+            throw new IllegalStateException("CouponState.isAvailable(): 쿠폰은 사용 가능한 상태여야 합니다.");
+        }
+    }
+
     boolean isUsed() {
         return this.status == CouponStatus.USED;
     }

@@ -2,6 +2,7 @@ package com.loopers.domain.coupon;
 
 import com.loopers.config.annotations.UnitTest;
 import com.loopers.domain.shared.Money;
+import com.loopers.domain.shared.OrderCoupon;
 import com.loopers.fixture.IssuedCouponFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ class IssuedCouponTest {
         CouponState couponState = new CouponState(CouponStatus.AVAILABLE, null);
         IssuedCoupon issuedCoupon = IssuedCouponFixture.builder().couponState(couponState).build();
 
-        assertThatThrownBy(() -> issuedCoupon.use(issuedCoupon.getTargetId() + 1, Money.of(1000L)))
+        assertThatThrownBy(() -> issuedCoupon.calculate(issuedCoupon.getTargetId() + 1, Money.of(5000L)))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("Issuance.validate().targetId");
     }
@@ -32,7 +33,7 @@ class IssuedCouponTest {
         CouponState couponState = new CouponState(CouponStatus.AVAILABLE, null);
         IssuedCoupon issuedCoupon = IssuedCouponFixture.builder().expiredAt(ZonedDateTime.now().minusDays(1)).couponState(couponState).build();
 
-        assertThatThrownBy(() -> issuedCoupon.use(issuedCoupon.getTargetId(), Money.of(1000L)))
+        assertThatThrownBy(() -> issuedCoupon.calculate(issuedCoupon.getTargetId(), Money.of(5000L)))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("Issuance.validate().expiredAt");
     }
@@ -43,7 +44,7 @@ class IssuedCouponTest {
         CouponState couponState = new CouponState(CouponStatus.USED, LocalDateTime.now());
         IssuedCoupon issuedCoupon = IssuedCouponFixture.builder().couponState(couponState).build();
 
-        assertThatThrownBy(() -> issuedCoupon.use(issuedCoupon.getTargetId(), Money.of(1000L)))
+        assertThatThrownBy(issuedCoupon::use)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("CouponState.used().status");
     }
@@ -54,7 +55,7 @@ class IssuedCouponTest {
         CouponState couponState = new CouponState(CouponStatus.INVALID, null);
         IssuedCoupon issuedCoupon = IssuedCouponFixture.builder().couponState(couponState).build();
 
-        assertThatThrownBy(() -> issuedCoupon.use(issuedCoupon.getTargetId(), Money.of(1000L)))
+        assertThatThrownBy(issuedCoupon::use)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("CouponState.used().status");
     }
@@ -67,11 +68,9 @@ class IssuedCouponTest {
         CouponState couponState = new CouponState(CouponStatus.AVAILABLE, null);
         IssuedCoupon issuedCoupon = IssuedCouponFixture.builder().couponState(couponState).discountType(DiscountType.FIXED).discountValue(discountValue).build();
 
-        Money discountAmount = issuedCoupon.use(issuedCoupon.getTargetId(), orderAmount);
+        OrderCoupon orderCoupon = issuedCoupon.calculate(issuedCoupon.getTargetId(), orderAmount);
 
-        assertThat(issuedCoupon.getCouponState().status()).isEqualByComparingTo(CouponStatus.USED);
-        assertThat(issuedCoupon.getCouponState().usedAt()).isNotNull();
-        assertThat(discountAmount.value()).isEqualTo(orderAmount.value() - discountValue);
+        assertThat(orderCoupon.paidPrice().value()).isEqualTo(orderAmount.value() - discountValue);
     }
 
     @DisplayName("회원 쿠폰 사용 시, 정률 할인 쿠폰이 유효한 경우 정상적으로 사용된다.")
@@ -82,10 +81,10 @@ class IssuedCouponTest {
         CouponState couponState = new CouponState(CouponStatus.AVAILABLE, null);
         IssuedCoupon issuedCoupon = IssuedCouponFixture.builder().couponState(couponState).discountType(DiscountType.PERCENT).discountValue(discountValue).build();
 
-        Money discountAmount = issuedCoupon.use(issuedCoupon.getTargetId(), orderAmount);
+        OrderCoupon orderCoupon = issuedCoupon.calculate(issuedCoupon.getTargetId(), orderAmount);
 
-        assertThat(issuedCoupon.getCouponState().status()).isEqualByComparingTo(CouponStatus.USED);
-        assertThat(issuedCoupon.getCouponState().usedAt()).isNotNull();
-        assertThat(discountAmount.value()).isEqualTo(orderAmount.value() - (orderAmount.value() * discountValue / 100));
+        assertThat(orderCoupon.paidPrice().value()).isEqualTo(orderAmount.value() - (orderAmount.value() * discountValue / 100));
     }
+
+
 }

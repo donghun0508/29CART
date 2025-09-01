@@ -7,6 +7,7 @@ dependencies {
     implementation(project(":modules:scheduler"))
     implementation(project(":supports:jackson"))
     implementation(project(":supports:logging"))
+    implementation(project(":supports:async"))
     implementation(project(":supports:monitoring"))
 
     // web

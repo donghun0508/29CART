@@ -4,6 +4,7 @@ import com.loopers.config.annotations.IntegrationTest;
 import com.loopers.support.error.CoreException;
 import com.loopers.support.error.ErrorType;
 import com.loopers.utils.DatabaseCleanUp;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,16 +32,14 @@ class ProductServiceTest {
         databaseCleanUp.truncateAllTables();
     }
 
-    @DisplayName("상품 목록 조회 시 조회 결과와 조회 상품 개수와 일치하지 않으면 예외가 발생한다")
+    @DisplayName("상품 목록 조회 시 존재하지 않은 상품 ID가 포함된 경우 개수가 일치하지 않는다.")
     @Test
     void throwsExceptionWhenProductCountDoesNotMatch() {
         List<Long> productIds = List.of(1L, 2L, 3L, Long.MAX_VALUE);
 
-        assertThatExceptionOfType(CoreException.class)
-                .isThrownBy(() -> productService.findAll(productIds))
-                .satisfies(exception -> {
-                    assertThat(exception.getErrorType()).isEqualTo(ErrorType.NOT_FOUND);
-                });
+        List<Product> products = productService.findAll(productIds);
+
+        assertThat(products).hasSizeLessThan(productIds.size());
     }
 
     @DisplayName("상품 목록 조회 시 조회 결과와 조회 상품 개수가 일치하면 정상적으로 조회된다")

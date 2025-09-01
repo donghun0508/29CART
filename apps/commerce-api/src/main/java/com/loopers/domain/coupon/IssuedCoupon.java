@@ -1,7 +1,10 @@
 package com.loopers.domain.coupon;
 
-import com.loopers.domain.BaseEntity;
+import com.loopers.domain.coupon.CouponEvent.CouponCancelledEvent;
+import com.loopers.domain.coupon.CouponEvent.CouponUsedEvent;
+import com.loopers.domain.shared.AggregateRoot;
 import com.loopers.domain.shared.Money;
+import com.loopers.domain.shared.OrderCoupon;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -17,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "issued_coupon")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class IssuedCoupon extends BaseEntity {
+public class IssuedCoupon extends AggregateRoot {
 
     @Column(name = "name", nullable = false, updatable = false)
     private String name;
@@ -46,14 +49,20 @@ public class IssuedCoupon extends BaseEntity {
     })
     private CouponState couponState;
 
-    public Money use(Long targetId, Money orderAmount) {
-        this.issuance.validate(targetId);
+    public void use() {
         this.couponState = this.couponState.used();
-        return this.discountType.calculate(orderAmount, discountValue);
+        this.registerEvent(new CouponUsedEvent(this));
     }
 
     public void cancel() {
         this.couponState = this.couponState.canceled();
+        this.registerEvent(new CouponCancelledEvent(this));
+    }
+
+    public OrderCoupon calculate(Long targetId, Money orderAmount) {
+        this.issuance.validate(targetId);
+        this.couponState.checkAvailable();
+        return new OrderCoupon(this.getId(), this.discountType.calculate(orderAmount, discountValue));
     }
 
     public boolean isUsed() {
