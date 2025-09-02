@@ -3,11 +3,13 @@ rootProject.name = "29cart"
 include(
     ":apps:commerce-api",
     ":apps:pg-simulator",
+    ":apps:commerce-streamer",
     ":modules:jpa",
     ":modules:redis",
     ":modules:feign",
     ":modules:resilience",
     ":modules:scheduler",
+    ":modules:kafka",
     ":supports:jackson",
     ":supports:logging",
     ":supports:async",
