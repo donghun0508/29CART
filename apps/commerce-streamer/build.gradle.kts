@@ -6,13 +6,11 @@ dependencies {
     implementation(project(":supports:jackson"))
     implementation(project(":supports:logging"))
     implementation(project(":supports:monitoring"))
+    implementation(project(":supports:common"))
 
     // web
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-
-    // querydsl
-    annotationProcessor("com.querydsl:querydsl-apt::jakarta")
 
     // test-fixtures
     testImplementation(testFixtures(project(":modules:jpa")))

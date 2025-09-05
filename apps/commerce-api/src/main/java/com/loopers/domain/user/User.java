@@ -1,8 +1,9 @@
 package com.loopers.domain.user;
 
+
 import static com.loopers.domain.shared.Preconditions.requireNonNull;
 
-import com.loopers.domain.BaseEntity;
+import com.loopers.common.domain.BaseEntity;
 import com.loopers.domain.shared.Money;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.CascadeType;

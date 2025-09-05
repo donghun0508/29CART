@@ -7,7 +7,6 @@ import com.loopers.application.catalog.ProductResult.ProductDetailResult;
 import com.loopers.application.catalog.ProductResult.ProductSliceResult;
 import com.loopers.domain.catalog.ProductCondition.DetailCondition;
 import com.loopers.domain.catalog.ProductCondition.ListCondition;
-import com.loopers.domain.user.AccountId;
 import com.loopers.interfaces.api.ApiResponse;
 import com.loopers.interfaces.api.NoCountPageResponse;
 import com.loopers.interfaces.api.PaginationRequest;

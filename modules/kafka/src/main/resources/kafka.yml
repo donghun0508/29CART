@@ -1,6 +1,5 @@
 spring:
   kafka:
-    bootstrap-servers: ${BOOTSTRAP_SERVERS}
     client-id: ${spring.application.name}
     properties:
       spring.json.add.type.headers: false # json serialize off

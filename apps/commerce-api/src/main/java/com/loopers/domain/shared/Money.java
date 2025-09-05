@@ -4,7 +4,6 @@ import static com.loopers.domain.shared.Preconditions.requireNonNull;
 import static com.loopers.domain.shared.Preconditions.requirePositive;
 
 import jakarta.persistence.Embeddable;
-import org.jetbrains.annotations.NotNull;
 
 @Embeddable
 public record Money(Long value) {
@@ -89,11 +88,5 @@ public record Money(Long value) {
 
     public boolean isPositive() {
         return this.value > 0;
-    }
-
-    @NotNull
-    @Override
-    public String toString() {
-        return String.format("%,d원", value);
     }
 }

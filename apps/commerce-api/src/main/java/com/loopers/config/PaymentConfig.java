@@ -7,7 +7,6 @@ import static com.loopers.config.PaymentConfig.SimulatorProviderConfig.Operation
 import com.loopers.infrastructure.client.payment.PaymentRequestRetryPolicy;
 import com.loopers.infrastructure.client.payment.PaymentGatewaySimulatorClientErrorDecoder;
 import com.loopers.resilience.Resilience4jConfigFactory;
-import feign.Logger;
 import feign.RequestInterceptor;
 import feign.codec.ErrorDecoder;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
@@ -25,9 +24,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Slf4j
+@EnableScheduling
 @EnableConfigurationProperties(PaymentProperties.class)
 public class PaymentConfig {
 

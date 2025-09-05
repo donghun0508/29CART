@@ -1,5 +1,6 @@
 package com.loopers.application.order;
 
+
 import static com.loopers.domain.shared.Preconditions.requireNonBlank;
 import static com.loopers.domain.shared.Preconditions.requireNonEmpty;
 
@@ -9,7 +10,6 @@ import com.loopers.domain.payment.PaymentMethod;
 import com.loopers.domain.user.AccountId;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class OrderCommand {
