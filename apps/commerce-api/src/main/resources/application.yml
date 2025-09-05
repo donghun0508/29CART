@@ -31,18 +31,16 @@ spring:
       - redis.yml
       - storage.yml
       - external.yml
+  kafka:
+    bootstrap-servers: ${BOOTSTRAP_SERVERS:localhost:19092}
+    admin:
+      properties:
+        bootstrap.servers: kafka:9092
 
 springdoc:
   use-fqn: true
   swagger-ui:
     path: /swagger-ui.html
-
-spring:
-  kafka:
-    bootstrap-servers: localhost:19092
-    admin:
-      properties:
-        bootstrap.servers: kafka:9092
 
 datasource:
   mysql-jpa:

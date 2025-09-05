@@ -4,10 +4,8 @@ import com.loopers.application.payment.PaymentCommand.PaymentSyncCommand;
 import com.loopers.application.payment.PaymentFacade;
 import com.loopers.interfaces.api.ApiResponse;
 import com.loopers.interfaces.api.payment.PaymentV1Dto.TransactionCallback;
-import com.loopers.logging.support.alert.NotificationEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,13 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentV1Controller implements PaymentV1ApiSpec {
 
     private final PaymentFacade paymentFacade;
-    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     @PostMapping("/callback")
     public ApiResponse<?> callback(@RequestBody TransactionCallback transactionCallback) {
-        applicationEventPublisher.publishEvent(
-            (NotificationEvent) () -> "결제 콜백을 수신했습니다. [주문번호: " + transactionCallback.orderId() + "] [상태: " + transactionCallback.status() + "]");
+//        applicationEventPublisher.publishEvent(
+//            (NotificationEvent) () -> "결제 콜백을 수신했습니다. [주문번호: " + transactionCallback.orderId() + "] [상태: " + transactionCallback.status() + "]");
 
         PaymentSyncCommand command = transactionCallback.toCommand();
         paymentFacade.sync(command);

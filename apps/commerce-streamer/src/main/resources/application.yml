@@ -28,10 +28,23 @@ spring:
       - kafka.yml
       - logging.yml
       - monitoring.yml
+  kafka:
+    bootstrap-servers: ${BOOTSTRAP_SERVERS:localhost:19092}
 
-demo-kafka:
-  test:
-    topic-name: demo.internal.topic-v1
+datasource:
+  mysql-jpa:
+    main:
+      jdbc-url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/events
+      username: ${MYSQL_USER:root}
+      password: ${MYSQL_PWD:root}
+  redis:
+    database: 0
+    master:
+      host: ${REDIS_MASTER_HOST:localhost}
+      port: ${REDIS_MASTER_PORT:6379}
+    replicas:
+      - host: ${REDIS_REPLICA_HOST:localhost}
+        port: ${REDIS_REPLICA_PORT:6380}
 
 ---
 spring:

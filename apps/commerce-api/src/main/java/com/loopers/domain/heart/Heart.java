@@ -1,8 +1,8 @@
 package com.loopers.domain.heart;
 
+import com.loopers.common.domain.AggregateRoot;
 import com.loopers.domain.heart.HeartEvent.HeartCreatedEvent;
 import com.loopers.domain.heart.HeartEvent.HeartRemovedEvent;
-import com.loopers.domain.shared.AggregateRoot;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;

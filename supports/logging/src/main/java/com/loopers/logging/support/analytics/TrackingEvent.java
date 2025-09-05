@@ -6,11 +6,12 @@ import lombok.Builder;
 @Builder
 public class TrackingEvent {
 
+    private final String topic;
+    private final String id;
     private final String methodName;
     private final String className;
     private final String threadName;
     private final Instant timestamp;
-    private final String phase;
     private final String arguments;
 
     public String message() {

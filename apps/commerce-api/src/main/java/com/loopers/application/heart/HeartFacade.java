@@ -5,10 +5,10 @@ import com.loopers.application.heart.HeartCommand.UnlikeCommand;
 import com.loopers.application.heart.processor.TargetProcessor;
 import com.loopers.domain.heart.Heart;
 import com.loopers.domain.heart.HeartService;
-import com.loopers.domain.shared.DomainEventPublisher;
 import com.loopers.domain.user.AccountId;
 import com.loopers.domain.user.User;
 import com.loopers.domain.user.UserService;
+import com.loopers.event.outbox.EventStore;
 import com.loopers.logging.support.analytics.EventTrace;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class HeartFacade {
     private final HeartService heartService;
     private final UserService userService;
     private final TargetProcessor targetProcessor;
-    private final DomainEventPublisher domainEventPublisher;
+    private final EventStore eventStore;
 
     @EventTrace
     @Transactional
@@ -35,7 +35,7 @@ public class HeartFacade {
         User user = userService.findByAccountId(criteria.accountId());
         Heart heart = Heart.from(user.getId(), criteria.target());
         heartService.create(heart);
-        domainEventPublisher.publishEvent(heart.events());
+        eventStore.save(heart);
     }
 
     @EventTrace
@@ -46,7 +46,7 @@ public class HeartFacade {
         Heart heart = heartService.findByUserIdAndTarget(user.getId(), criteria.target());
         heart.remove();
         heartService.delete(heart);
-        domainEventPublisher.publishEvent(heart.events());
+        eventStore.save(heart);
     }
 
     public Page<HeartResult> getHeartList(String userId, Pageable pageable) {

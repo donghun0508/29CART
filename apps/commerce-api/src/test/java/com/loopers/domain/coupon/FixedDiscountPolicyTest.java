@@ -1,9 +1,7 @@
 package com.loopers.domain.coupon;
 
-import static com.loopers.domain.shared.Money.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 import com.loopers.config.annotations.UnitTest;
 import com.loopers.domain.shared.Money;

@@ -2,14 +2,14 @@ package com.loopers.application.payment.processor;
 
 import com.loopers.application.payment.processor.PointPaymentProcessor.PointPaymentRequest;
 import com.loopers.application.payment.processor.support.PaymentExceptionTranslator;
+import com.loopers.domain.shared.Money;
 import com.loopers.domain.order.OrderNumber;
 import com.loopers.domain.order.OrderService;
 import com.loopers.domain.payment.PaymentService;
 import com.loopers.domain.payment.PointPayment;
-import com.loopers.domain.shared.DomainEventPublisher;
-import com.loopers.domain.shared.Money;
 import com.loopers.domain.user.User;
 import com.loopers.domain.user.UserService;
+import com.loopers.event.outbox.EventStore;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,11 +20,11 @@ public class PointPaymentProcessor extends PaymentProcessorTemplate<PointPayment
     PointPaymentProcessor(
         OrderService orderService,
         PaymentService paymentService,
-        DomainEventPublisher domainEventPublisher,
+        EventStore eventStore,
         PaymentExceptionTranslator paymentExceptionTranslator,
         UserService userService
     ) {
-        super(orderService, paymentService, domainEventPublisher, paymentExceptionTranslator);
+        super(orderService, paymentService, eventStore, paymentExceptionTranslator);
         this.userService = userService;
     }
 
