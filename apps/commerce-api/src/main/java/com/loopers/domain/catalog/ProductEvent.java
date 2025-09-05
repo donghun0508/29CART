@@ -1,24 +1,16 @@
 package com.loopers.domain.catalog;
 
-import com.loopers.domain.shared.DomainEvent;
-import com.loopers.logging.support.alert.NotificationEvent;
+
+import com.loopers.common.domain.DomainEvent;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.Getter;
 
 public class ProductEvent {
 
-    public static class ProductRestoredEvent extends DomainEvent implements NotificationEvent {
-        private final String orderNumber;
+    @Getter
+    public static class ProductHeartIncreasedEvent implements DomainEvent {
 
-        public ProductRestoredEvent(String orderNumber) {
-            this.orderNumber = orderNumber;
-        }
-
-        @Override
-        public String message() {
-            return String.format("결제가 취소되어 재고를 복구합니다. [주문번호: %s]", orderNumber);
-        }
-    }
-
-    public static class ProductHeartIncreasedEvent extends DomainEvent implements NotificationEvent {
         private final Long productId;
         private final Long heartCount;
 
@@ -26,19 +18,11 @@ public class ProductEvent {
             this.productId = product.getId();
             this.heartCount = product.getHeartCount();
         }
-
-        @Override
-        public boolean shouldNotify() {
-            return false;
-        }
-
-        @Override
-        public String message() {
-            return String.format("상품 좋아요 수가 증가했습니다. [상품ID: %d] [좋아요: %d개]", productId, heartCount);
-        }
     }
 
-    public static class ProductHeartDecreasedEvent extends DomainEvent implements NotificationEvent {
+    @Getter
+    public static class ProductHeartDecreasedEvent implements DomainEvent {
+
         private final Long productId;
         private final Long heartCount;
 
@@ -46,15 +30,35 @@ public class ProductEvent {
             this.productId = product.getId();
             this.heartCount = product.getHeartCount();
         }
+    }
 
-        @Override
-        public boolean shouldNotify() {
-            return false;
+    @Getter
+    public static class ProductDetailViewedEvent implements DomainEvent {
+        private final String type = "detail_viewed";
+        private final Long productId;
+
+        public ProductDetailViewedEvent(Long productId) {
+            this.productId = productId;
         }
+    }
 
-        @Override
-        public String message() {
-            return String.format("상품 좋아요 수가 감소했습니다. [상품ID: %d] [좋아요: %d개]", productId, heartCount);
+    @Getter
+    public static class ProductStockRestoredEvent implements DomainEvent {
+        private final Map<Long, Long> restoredStockMap;
+
+        public ProductStockRestoredEvent(Product product, Stock restoredStock) {
+            this.restoredStockMap = new HashMap<>();
+            this.restoredStockMap.put(product.getId(), restoredStock.count());
+        }
+    }
+
+    @Getter
+    public static class ProductStockDecreasedEvent implements DomainEvent {
+        private final Map<Long, Long> decreasedStockMap;
+
+        public ProductStockDecreasedEvent(Product product) {
+            this.decreasedStockMap = new HashMap<>();
+            this.decreasedStockMap.put(product.getId(), product.getStock().count());
         }
     }
 

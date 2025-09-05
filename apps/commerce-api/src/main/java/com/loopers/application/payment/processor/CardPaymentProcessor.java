@@ -4,14 +4,14 @@ import static com.loopers.domain.payment.PaymentProvider.SIMULATOR;
 
 import com.loopers.application.payment.processor.CardPaymentProcessor.CardPaymentRequest;
 import com.loopers.application.payment.processor.support.PaymentExceptionTranslator;
+import com.loopers.domain.shared.Money;
 import com.loopers.domain.order.OrderNumber;
 import com.loopers.domain.order.OrderService;
 import com.loopers.domain.payment.CardPayment;
 import com.loopers.domain.payment.CardType;
 import com.loopers.domain.payment.PaymentClientData.PaymentClientResponse;
 import com.loopers.domain.payment.PaymentService;
-import com.loopers.domain.shared.DomainEventPublisher;
-import com.loopers.domain.shared.Money;
+import com.loopers.event.outbox.EventStore;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,10 +20,10 @@ public class CardPaymentProcessor extends PaymentProcessorTemplate<CardPaymentRe
     protected CardPaymentProcessor(
         OrderService orderService,
         PaymentService paymentService,
-        DomainEventPublisher domainEventPublisher,
+        EventStore eventStore,
         PaymentExceptionTranslator paymentExceptionTranslator
     ) {
-        super(orderService, paymentService, domainEventPublisher, paymentExceptionTranslator);
+        super(orderService, paymentService, eventStore, paymentExceptionTranslator);
     }
 
     @Override

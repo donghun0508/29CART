@@ -1,12 +1,12 @@
 package com.loopers.domain.heart;
 
-import com.loopers.domain.shared.DomainEvent;
+import com.loopers.common.domain.DomainEvent;
 import lombok.Getter;
 
 public class HeartEvent {
 
     @Getter
-    public static class HeartCreatedEvent extends DomainEvent {
+    public static class HeartCreatedEvent implements DomainEvent {
         private final Long targetId;
         private final TargetType targetType;
 
@@ -17,7 +17,7 @@ public class HeartEvent {
     }
 
     @Getter
-    public static class HeartRemovedEvent extends DomainEvent {
+    public static class HeartRemovedEvent implements DomainEvent {
         private final Long targetId;
         private final TargetType targetType;
 

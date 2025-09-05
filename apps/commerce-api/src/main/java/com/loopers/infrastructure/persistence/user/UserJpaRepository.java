@@ -14,7 +14,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface UserJpaRepository extends JpaRepository<User, Long> {
 
-    @Query("SELECT u FROM User u JOIN FETCH u.point WHERE u.accountId = :accountId")
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.point WHERE u.accountId = :accountId")
     Optional<User> findByAccountId(@Param("accountId") AccountId accountId);
 
     boolean existsByAccountIdAndEmail(AccountId accountId, Email email);
