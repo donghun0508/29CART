@@ -1,4 +1,4 @@
-package com.loopers.async.config;
+package com.loopers.event.outbox.config;
 
 import java.util.Objects;
 import java.util.Properties;
@@ -14,9 +14,9 @@ public class YamlPropertySourceFactory implements PropertySourceFactory {
     public PropertySource<?> createPropertySource(String name, EncodedResource resource) {
         YamlPropertiesFactoryBean factory = new YamlPropertiesFactoryBean();
         factory.setResources(resource.getResource());
-        
+
         Properties properties = factory.getObject();
-        
+
         return new PropertiesPropertySource(
             Objects.requireNonNull(resource.getResource().getFilename()),
             Objects.requireNonNull(properties)
