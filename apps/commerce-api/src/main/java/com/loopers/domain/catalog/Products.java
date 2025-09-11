@@ -7,9 +7,11 @@ import com.loopers.support.error.ErrorType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
 
 public class Products {
 
+    @Getter
     private final List<Product> products;
 
     private Products(List<Product> products) {

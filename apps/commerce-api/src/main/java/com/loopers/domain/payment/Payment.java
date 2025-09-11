@@ -1,9 +1,9 @@
 package com.loopers.domain.payment;
 
+import com.loopers.common.domain.AggregateRoot;
+import com.loopers.domain.shared.Money;
 import com.loopers.domain.payment.PaymentEvent.PaymentCompletedEvent;
 import com.loopers.domain.payment.PaymentEvent.PaymentFailedEvent;
-import com.loopers.domain.shared.AggregateRoot;
-import com.loopers.domain.shared.Money;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
@@ -17,7 +17,6 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.DomainEvents;
 
 @Getter
 @Entity

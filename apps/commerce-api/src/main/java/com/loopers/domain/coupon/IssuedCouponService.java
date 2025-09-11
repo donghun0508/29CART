@@ -2,8 +2,6 @@ package com.loopers.domain.coupon;
 
 import com.loopers.support.error.CoreException;
 import com.loopers.support.error.ErrorType;
-import java.util.Objects;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,5 +1,6 @@
 package com.loopers.domain.order;
 
+
 import static com.loopers.domain.shared.Preconditions.requireNonBlank;
 
 import jakarta.persistence.Embeddable;

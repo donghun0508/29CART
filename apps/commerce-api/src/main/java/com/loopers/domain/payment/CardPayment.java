@@ -3,10 +3,9 @@ package com.loopers.domain.payment;
 import static com.loopers.domain.payment.PaymentStatus.PENDING;
 import static com.loopers.domain.payment.PaymentStatus.REQUESTED;
 
+import com.loopers.domain.shared.Money;
 import com.loopers.domain.payment.PaymentClientData.PaymentClientResponse;
 import com.loopers.domain.payment.PaymentEvent.CardPaymentRequestedEvent;
-import com.loopers.domain.payment.PaymentEvent.PaymentCompletedEvent;
-import com.loopers.domain.shared.Money;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;

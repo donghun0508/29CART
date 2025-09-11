@@ -1,5 +1,6 @@
 package com.loopers.domain.coupon;
 
+
 import com.loopers.domain.shared.Money;
 
 public enum DiscountType {

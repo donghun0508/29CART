@@ -1,5 +1,6 @@
 package com.loopers.domain.user;
 
+
 import static com.loopers.domain.shared.Preconditions.requireNonBlank;
 
 import jakarta.persistence.Embeddable;

@@ -8,11 +8,11 @@ import com.loopers.domain.coupon.IssuedCouponService;
 import com.loopers.domain.order.Order;
 import com.loopers.domain.order.OrderNumber;
 import com.loopers.domain.order.OrderService;
-import com.loopers.domain.shared.DomainEventPublisher;
 import com.loopers.domain.shared.OrderCoupon;
 import com.loopers.domain.shared.StockReservations;
 import com.loopers.domain.user.User;
 import com.loopers.domain.user.UserService;
+import com.loopers.event.outbox.EventStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -27,7 +27,7 @@ public class OrderFacade {
     private final IssuedCouponService issuedCouponService;
     private final ProductService productService;
     private final OrderService orderService;
-    private final DomainEventPublisher domainEventPublisher;
+    private final EventStore eventStore;
 
     @Transactional
     public void place(OrderRequestCommand command) {
@@ -48,21 +48,21 @@ public class OrderFacade {
         Order order = Order.create(buyer.getId(), command.idempotencyKey(), orderCoupon, reservations.getStockReservations(), command.paymentMethod());
         orderService.save(order);
 
-        // 이벤트 발행
-        domainEventPublisher.publishEvent(order.events());
+        // 이벤트 저장
+        eventStore.save(order);
     }
 
     @Transactional
     public void complete(OrderNumber orderNumber) {
         Order order = orderService.findByOrderNumber(orderNumber);
         order.complete();
-        domainEventPublisher.publishEvent(order.events());
+        eventStore.save(order);
     }
 
     @Transactional
     public void fail(OrderNumber orderNumber) {
         Order order = orderService.findByOrderNumber(orderNumber);
         order.fail();
-        domainEventPublisher.publishEvent(order.events());
+        eventStore.save(order);
     }
 }

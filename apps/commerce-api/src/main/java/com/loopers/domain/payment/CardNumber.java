@@ -1,7 +1,5 @@
 package com.loopers.domain.payment;
 
-import static com.loopers.domain.shared.Preconditions.requireNonBlank;
-
 import java.util.regex.Pattern;
 
 public record CardNumber(String number) {

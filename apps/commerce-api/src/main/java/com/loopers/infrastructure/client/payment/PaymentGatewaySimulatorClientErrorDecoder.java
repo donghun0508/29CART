@@ -11,7 +11,6 @@ import feign.Util;
 import feign.codec.ErrorDecoder;
 import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 
 @Slf4j
 public class PaymentGatewaySimulatorClientErrorDecoder implements ErrorDecoder {

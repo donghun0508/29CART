@@ -1,6 +1,6 @@
 package com.loopers.domain.catalog;
 
-import com.loopers.domain.BaseEntity;
+import com.loopers.common.domain.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;

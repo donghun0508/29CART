@@ -1,6 +1,5 @@
 package com.loopers.resilience;
 
-import static io.github.resilience4j.retry.RetryConfig.*;
 import static java.util.Optional.ofNullable;
 
 import com.loopers.resilience.config.Resilience4jConfig.CustomCircuitBreakerConfig;
@@ -19,8 +18,6 @@ import io.github.resilience4j.timelimiter.TimeLimiterConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterRegistry;
 import java.lang.reflect.Field;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;

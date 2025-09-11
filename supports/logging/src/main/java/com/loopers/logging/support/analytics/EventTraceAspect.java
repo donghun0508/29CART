@@ -30,7 +30,6 @@ public class EventTraceAspect {
             .className(signature.getDeclaringType().getSimpleName())
             .threadName(threadName)
             .timestamp(Instant.now())
-            .phase("BEFORE")
             .arguments(Arrays.toString(args))
             .build();
 

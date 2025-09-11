@@ -1,9 +1,9 @@
 package com.loopers.domain.coupon;
 
+import com.loopers.common.domain.AggregateRoot;
+import com.loopers.domain.shared.Money;
 import com.loopers.domain.coupon.CouponEvent.CouponCancelledEvent;
 import com.loopers.domain.coupon.CouponEvent.CouponUsedEvent;
-import com.loopers.domain.shared.AggregateRoot;
-import com.loopers.domain.shared.Money;
 import com.loopers.domain.shared.OrderCoupon;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;

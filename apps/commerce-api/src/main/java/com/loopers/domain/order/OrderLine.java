@@ -1,8 +1,9 @@
 package com.loopers.domain.order;
 
+
 import static com.loopers.domain.shared.Preconditions.requireNonNull;
 
-import com.loopers.domain.BaseEntity;
+import com.loopers.common.domain.BaseEntity;
 import com.loopers.domain.shared.Money;
 import com.loopers.domain.shared.StockReservations.StockReservation;
 import jakarta.persistence.AttributeOverride;

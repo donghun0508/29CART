@@ -1,4 +1,5 @@
 dependencies {
+    implementation(project(":modules:event-outbox"))
     // spring
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-aop")
@@ -9,3 +10,4 @@ dependencies {
     // Slack Appender
     implementation("com.github.maricn:logback-slack-appender:${project.properties["slackAppenderVersion"]}")
 }
+

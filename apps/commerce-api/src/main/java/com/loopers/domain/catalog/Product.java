@@ -1,12 +1,15 @@
 package com.loopers.domain.catalog;
 
+
 import static com.loopers.domain.shared.Preconditions.requireNonNull;
 import static com.loopers.domain.shared.Preconditions.requirePositive;
 
+import com.loopers.common.domain.AggregateRoot;
+import com.loopers.domain.catalog.ProductEvent.ProductStockDecreasedEvent;
+import com.loopers.domain.catalog.ProductEvent.ProductStockRestoredEvent;
+import com.loopers.domain.shared.Money;
 import com.loopers.domain.catalog.ProductEvent.ProductHeartDecreasedEvent;
 import com.loopers.domain.catalog.ProductEvent.ProductHeartIncreasedEvent;
-import com.loopers.domain.shared.AggregateRoot;
-import com.loopers.domain.shared.Money;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -48,12 +51,14 @@ public class Product extends AggregateRoot {
         requireNonNull(stock, "Product.decreaseStock().stock: 수량은 null일 수 없습니다.");
         requirePositive(stock.count(), "Product.decreaseStock().stock.value: 수량은 0보다 커야 합니다.");
         this.stock = this.stock.subtract(stock);
+        this.registerEvent(new ProductStockDecreasedEvent(this));
     }
 
     public void increaseStock(Stock stock) {
         requireNonNull(stock, "Product.decreaseStock().stock: 수량은 null일 수 없습니다.");
         requirePositive(stock.count(), "Product.decreaseStock().stock.value: 수량은 0보다 커야 합니다.");
         this.stock = this.stock.add(stock);
+        this.registerEvent(new ProductStockRestoredEvent(this, stock));
     }
 
     public void heart() {

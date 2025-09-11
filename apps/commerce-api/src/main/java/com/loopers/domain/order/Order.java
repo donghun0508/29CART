@@ -1,13 +1,12 @@
 package com.loopers.domain.order;
 
 
-import com.loopers.domain.order.OrderEvent.OrderAppliedCouponEvent;
+import com.loopers.common.domain.AggregateRoot;
+import com.loopers.domain.shared.Money;
 import com.loopers.domain.order.OrderEvent.OrderCompletedEvent;
 import com.loopers.domain.order.OrderEvent.OrderCreatedEvent;
 import com.loopers.domain.order.OrderEvent.OrderFailedEvent;
 import com.loopers.domain.payment.PaymentMethod;
-import com.loopers.domain.shared.AggregateRoot;
-import com.loopers.domain.shared.Money;
 import com.loopers.domain.shared.OrderCoupon;
 import com.loopers.domain.shared.StockReservations.StockReservation;
 import jakarta.persistence.AttributeOverride;
@@ -68,7 +67,8 @@ public class Order extends AggregateRoot {
     @Transient
     private PaymentMethod paymentMethod;
 
-    public static Order create(Long buyerId, IdempotencyKey idempotencyKey, OrderCoupon orderCoupon, List<StockReservation> stockReservations, PaymentMethod paymentMethod) {
+    public static Order create(Long buyerId, IdempotencyKey idempotencyKey, OrderCoupon orderCoupon,
+        List<StockReservation> stockReservations, PaymentMethod paymentMethod) {
         Order order = new Order();
         order.buyerId = buyerId;
         order.orderLines = OrderLines.of(order, stockReservations);
@@ -79,10 +79,6 @@ public class Order extends AggregateRoot {
         order.paymentMethod = paymentMethod;
         order.totalAmount = order.orderLines.calculateTotalAmount();
         order.registerEvent(new OrderCreatedEvent(order));
-
-        if(order.orderCoupon.hasCoupon()) {
-            order.registerEvent(new OrderAppliedCouponEvent(order));
-        }
         return order;
     }
 
@@ -130,12 +126,13 @@ public class Order extends AggregateRoot {
 
     private void validateCompletable() {
         if (!isPending()) {
-            throw new IllegalStateException("Order.validateCompletable(): 이미 주문이 완료되었거나 취소된 주문입니다. 주문번호: " + this.orderNumber.number());
+            throw new IllegalStateException(
+                "Order.validateCompletable(): 이미 주문이 완료되었거나 취소된 주문입니다. 주문번호: " + this.orderNumber.number());
         }
     }
 
     private void validateFailable() {
-        if(isFailed()) {
+        if (isFailed()) {
             throw new IllegalStateException("Order.validateFailable(): 이미 주문이 실패 상태입니다. 주문번호: " + this.orderNumber.number());
         }
     }

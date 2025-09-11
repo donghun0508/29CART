@@ -6,7 +6,7 @@ import com.loopers.domain.order.OrderNumber;
 import com.loopers.domain.order.OrderService;
 import com.loopers.domain.payment.Payment;
 import com.loopers.domain.payment.PaymentService;
-import com.loopers.domain.shared.DomainEventPublisher;
+import com.loopers.event.outbox.EventStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +16,7 @@ public abstract class PaymentProcessorTemplate<T extends PaymentRequest, P exten
 
     private final OrderService orderService;
     private final PaymentService paymentService;
-    private final DomainEventPublisher domainEventPublisher;
+    private final EventStore eventStore;
     protected final PaymentExceptionTranslator paymentExceptionTranslator;
 
     @Override
@@ -32,7 +32,7 @@ public abstract class PaymentProcessorTemplate<T extends PaymentRequest, P exten
             payment.fail(paymentException.getReason());
         } finally {
             save(payment);
-            domainEventPublisher.publishEvent(payment.events());
+            eventStore.save(payment);
         }
     }
 

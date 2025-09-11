@@ -1,8 +1,8 @@
 package com.loopers.domain.order;
 
+
 import static com.loopers.domain.shared.Preconditions.requireNonBlank;
 
-import com.loopers.domain.shared.Preconditions;
 import jakarta.persistence.Embeddable;
 import java.util.UUID;
 

@@ -8,7 +8,7 @@ import com.loopers.domain.payment.CardPayment;
 import com.loopers.domain.payment.Payment;
 import com.loopers.domain.payment.PaymentService;
 import com.loopers.domain.payment.PaymentStatus;
-import com.loopers.domain.shared.DomainEventPublisher;
+import com.loopers.event.outbox.EventStore;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PaymentFacade {
 
     private final PaymentService paymentService;
-    private final DomainEventPublisher domainEventPublisher;
+    private final EventStore eventStore;
     private final PaymentAdapterRegistry paymentAdapterRegistry;
 
     public void paymentRequest(PaymentRequestCommand command) {
@@ -36,7 +36,7 @@ public class PaymentFacade {
         } else {
             payment.fail(command.reason());
         }
-        domainEventPublisher.publishEvent(payment.events());
+        eventStore.save(payment);
     }
 
     public List<String> getSyncTransactionIds() {
