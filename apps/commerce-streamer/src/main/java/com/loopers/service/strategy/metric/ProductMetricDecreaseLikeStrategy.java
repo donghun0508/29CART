@@ -1,10 +1,9 @@
 package com.loopers.service.strategy.metric;
 
 import com.loopers.domain.ProductMetric;
-import com.loopers.service.ProductMetricAnalysis;
 import com.loopers.service.PayloadMapper;
+import com.loopers.service.ProductMetricAnalysis;
 import com.loopers.service.strategy.metric.ProductMetricDecreaseLikeStrategy.ProductHeartDecreasedEvent;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -31,11 +30,7 @@ class ProductMetricDecreaseLikeStrategy implements ProductMetricStrategy<Product
         productMetric.decrementLikeCount();
     }
 
-    public record ProductHeartDecreasedEvent(Long productId, Long heartCount) implements ProductMetricEvent {
+    public record ProductHeartDecreasedEvent(Long productId, Long heartCount, Long unitPrice) implements ProductMetricEvent {
 
-        @Override
-        public List<Long> productIds() {
-            return List.of(productId);
-        }
     }
 }

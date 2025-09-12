@@ -3,7 +3,7 @@ package com.loopers.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.loopers.service.strategy.ProductMetricIncreaseLikeStrategy.ProductHeartIncreasedEvent;
+import com.loopers.service.strategy.metric.ProductMetricIncreaseLikeStrategy.ProductHeartIncreasedEvent;
 import org.junit.jupiter.api.Test;
 
 

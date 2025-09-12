@@ -11,6 +11,7 @@ public interface ProductMetricStrategy<T extends ProductMetricEvent> {
     void process(T event, ProductMetric productMetric);
 
     interface ProductMetricEvent {
-        List<Long> productIds();
+        Long productId();
+        Long unitPrice();
     }
 }
