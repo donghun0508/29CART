@@ -50,6 +50,7 @@ public class OrderFacade {
 
         // 이벤트 저장
         eventStore.save(order);
+        products.getProducts().forEach(eventStore::save);
     }
 
     @Transactional
