@@ -17,6 +17,20 @@ public class ProductSliceRead {
     public ProductSliceRead() {
     }
 
+    public static ProductSliceRead from(List<Product> products) {
+        ProductSliceRead productSliceRead = new ProductSliceRead();
+
+        productSliceRead.content = products.stream()
+            .map(ProductRead::from)
+            .toList();
+
+        productSliceRead.hasNext = false;
+        productSliceRead.size = products.size();
+        productSliceRead.number = 0;
+
+        return productSliceRead;
+    }
+
     public static ProductSliceRead from(Slice<Product> products) {
         ProductSliceRead productSliceRead = new ProductSliceRead();
 

@@ -24,4 +24,5 @@ public interface ProductRepository {
     Slice<Product> findSliceByCondition(ListCondition condition);
 
     Long countByBrandId(Long brandId);
+
 }

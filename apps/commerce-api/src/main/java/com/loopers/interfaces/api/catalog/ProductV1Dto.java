@@ -45,6 +45,7 @@ public class ProductV1Dto {
 
     public record GetDetailResponse(
         Long productId,
+        Integer rank,
         ProductDetailInfo product,
         BrandDetailInfo brand
     ) {
@@ -69,6 +70,7 @@ public class ProductV1Dto {
         public static GetDetailResponse from(ProductDetailResult result) {
             return new GetDetailResponse(
                 result.productId(),
+                result.rank(),
                 new ProductDetailInfo(
                     result.product().productName(),
                     result.product().isSoldOut(),

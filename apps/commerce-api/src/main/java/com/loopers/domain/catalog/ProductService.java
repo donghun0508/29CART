@@ -6,7 +6,12 @@ import static com.loopers.domain.shared.Preconditions.isHit;
 import com.loopers.domain.catalog.ProductCondition.ListCondition;
 import com.loopers.support.error.CoreException;
 import com.loopers.support.error.ErrorType;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Slice;
@@ -33,6 +38,17 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<Product> findAll(List<Long> productIds) {
         return productRepository.findAllByIdIn(productIds);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Product> findAllOrderBy(List<Long> productIds) {
+        List<Product> products = productRepository.findAllByIdIn(productIds);
+
+        Map<Long, Integer> order = new HashMap<>();
+        for (int i = 0; i < productIds.size(); i++) order.put(productIds.get(i), i);
+        products.sort(Comparator.comparingInt(p -> order.getOrDefault(p.getId(), Integer.MAX_VALUE)));
+
+        return products;
     }
 
     @Transactional
@@ -84,6 +100,7 @@ public class ProductService {
         return productSliceRead;
     }
 
+
     @Transactional(readOnly = true)
     public ProductRead getProductRead(Long productId) {
         ProductRead cache = productCacheRepository.findById(productId);
@@ -105,5 +122,15 @@ public class ProductService {
 
     public Long getCountByBrandId(Long brandId) {
         return productRepository.countByBrandId(brandId);
+    }
+
+    public List<Long> getHotProducts(String key, int start, int end) {
+        Set<String> members = productCacheRepository.find(key, start, end);
+        if (members == null || members.isEmpty()) return List.of();
+        return members.stream().map(Long::valueOf).toList();
+    }
+
+    public Integer getRanking(String key, Long productId) {
+        return productCacheRepository.findRank(key, productId);
     }
 }
