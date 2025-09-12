@@ -1,12 +1,12 @@
 package com.loopers.application.catalog;
 
 import com.loopers.application.catalog.ProductResult.ProductDetailResult;
+import com.loopers.application.catalog.ProductResult.ProductSliceRankingResult;
 import com.loopers.application.catalog.ProductResult.ProductSliceResult;
 import com.loopers.domain.catalog.Product;
 import com.loopers.domain.catalog.ProductCondition.DetailCondition;
 import com.loopers.domain.catalog.ProductCondition.ListCondition;
 import com.loopers.domain.catalog.ProductEvent.ProductDetailViewedEvent;
-import com.loopers.domain.catalog.ProductEvent.ProductStockRestoredEvent;
 import com.loopers.domain.catalog.ProductRead;
 import com.loopers.domain.catalog.ProductService;
 import com.loopers.domain.catalog.ProductSliceRead;
@@ -17,11 +17,15 @@ import com.loopers.domain.order.OrderNumber;
 import com.loopers.domain.order.OrderService;
 import com.loopers.domain.user.UserService;
 import com.loopers.event.outbox.EventStore;
-import com.loopers.logging.support.analytics.EventTrace;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +36,7 @@ public class ProductFacade {
 
     private final OrderService orderService;
     private final ProductService productService;
+    private final HotProductKeyGenerator hotProductKeyGenerator;
     private final UserService userService;
     private final HeartService heartService;
     private final EventStore eventStore;
@@ -42,6 +47,22 @@ public class ProductFacade {
         return ProductSliceResult.from(productSliceRead);
     }
 
+    public Slice<ProductSliceRankingResult> getHotProducts(String date, Pageable pageable) {
+        String key = hotProductKeyGenerator.generate(date);
+
+        int offset = (int) pageable.getOffset();
+        int size   = pageable.getPageSize();
+        int end    = offset + size - 1;
+
+        List<Long> hotProductIds = productService.getHotProducts(key, offset, end);
+        if (hotProductIds.isEmpty()) {
+            return new SliceImpl<>(Collections.emptyList(), pageable, false);
+        }
+
+        List<Product> products = productService.findAllOrderBy(hotProductIds);
+        return ProductSliceRankingResult.from(Objects.requireNonNull(ProductSliceRead.from(products)));
+    }
+
     public ProductDetailResult getProductDetail(DetailCondition condition) {
         ProductRead productRead = productService.getProductRead(condition.productId());
 
@@ -49,8 +70,9 @@ public class ProductFacade {
             .map(user -> heartService.isLikedBy(user.getId(), productRead.toTarget()))
             .orElse(false));
 
-        applicationEventPublisher.publishEvent(new ProductDetailViewedEvent(condition.productId()));
-        return ProductDetailResult.from(productRead);
+        Integer rank = productService.getRanking(hotProductKeyGenerator.generate(), productRead.getId());
+        applicationEventPublisher.publishEvent(new ProductDetailViewedEvent(productRead));
+        return ProductDetailResult.from(productRead, rank);
     }
 
     @Transactional
