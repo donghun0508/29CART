@@ -4,8 +4,10 @@ import com.loopers.domain.catalog.ProductCacheRepository;
 import com.loopers.domain.catalog.ProductCondition.ListCondition;
 import com.loopers.domain.catalog.ProductRead;
 import com.loopers.domain.catalog.ProductSliceRead;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 class ProductCacheRepositoryImpl implements ProductCacheRepository {
 
+    private final StringRedisTemplate redis;
     private final ProductListRedisCacheRepository productListRedisCacheRepository;
     private final ProductDetailRedisCacheRepository productDetailRedisCacheRepository;
 
@@ -24,6 +27,17 @@ class ProductCacheRepositoryImpl implements ProductCacheRepository {
     @Override
     public void save(ListCondition condition, ProductSliceRead productSliceRead) {
         productListRedisCacheRepository.save(condition, productSliceRead);
+    }
+
+    @Override
+    public Set<String> find(String key, int start, int end) {
+        return redis.opsForZSet().reverseRange(key, start, end);
+    }
+
+    @Override
+    public Integer findRank(String key, Long productId) {
+        Long rank = redis.opsForZSet().reverseRank(key, String.valueOf(productId));
+        return (rank != null) ? rank.intValue() + 1 : null;
     }
 
     @Override

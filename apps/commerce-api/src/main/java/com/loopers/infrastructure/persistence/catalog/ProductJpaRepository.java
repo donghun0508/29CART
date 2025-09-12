@@ -15,6 +15,9 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long>, Cust
     @Query("SELECT p FROM Product p WHERE p.id IN :productIds")
     List<Product> findAllByIdInWithLock(@Param("productIds") List<Long> productIds);
 
+    @Query("SELECT p FROM Product p JOIN FETCH p.brand WHERE p.id IN :productIds")
+    List<Product> findAllByIdFetchJoin(List<Long> productIds);
+
     @Lock(LockModeType.OPTIMISTIC)
     @Query("SELECT p FROM Product p WHERE p.id = :productId")
     Optional<Product> findByIdWithOptimisticLock(@Param("productId") Long productId);

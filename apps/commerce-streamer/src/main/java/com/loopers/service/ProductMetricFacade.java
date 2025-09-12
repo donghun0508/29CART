@@ -1,15 +1,18 @@
 package com.loopers.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
-public class ProductMetricService {
+public class ProductMetricFacade {
 
     private final ProductMetricTemplate productMetricTemplate;
 
-    public void save(ProductMetricAnalysis productMetricAnalysis) {
-        productMetricTemplate.execute(productMetricAnalysis);
+    public void metric(List<ProductMetricAnalysis> analyses) {
+        analyses.forEach(productMetricTemplate::save);
     }
 }

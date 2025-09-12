@@ -21,6 +21,6 @@ public class MetricConverter implements Converter<ConsumerRecord<String, byte[]>
             ? new String(source.value(), StandardCharsets.UTF_8)
             : null;
 
-        return new ProductMetricAnalysis(header(h, "eventType"), payloadJson);
+        return new ProductMetricAnalysis(header(h, "eventType"), header(h, "eventId"), payloadJson);
     }
 }

@@ -51,7 +51,7 @@ public class Product extends AggregateRoot {
         requireNonNull(stock, "Product.decreaseStock().stock: 수량은 null일 수 없습니다.");
         requirePositive(stock.count(), "Product.decreaseStock().stock.value: 수량은 0보다 커야 합니다.");
         this.stock = this.stock.subtract(stock);
-        this.registerEvent(new ProductStockDecreasedEvent(this));
+        this.registerEvent(new ProductStockDecreasedEvent(this, stock));
     }
 
     public void increaseStock(Stock stock) {

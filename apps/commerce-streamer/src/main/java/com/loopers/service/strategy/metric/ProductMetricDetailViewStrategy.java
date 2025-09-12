@@ -1,10 +1,9 @@
 package com.loopers.service.strategy.metric;
 
 import com.loopers.domain.ProductMetric;
-import com.loopers.service.ProductMetricAnalysis;
 import com.loopers.service.PayloadMapper;
+import com.loopers.service.ProductMetricAnalysis;
 import com.loopers.service.strategy.metric.ProductMetricDetailViewStrategy.ProductDetailViewedEvent;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -31,10 +30,7 @@ class ProductMetricDetailViewStrategy implements ProductMetricStrategy<ProductDe
         productMetric.incrementDetailViewCount();
     }
 
-    public record ProductDetailViewedEvent(String type, Long productId) implements ProductMetricEvent {
-        @Override
-        public List<Long> productIds() {
-            return List.of(productId);
-        }
+    public record ProductDetailViewedEvent(Long productId, Long unitPrice) implements ProductMetricEvent {
+
     }
 }
